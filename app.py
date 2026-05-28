@@ -862,6 +862,10 @@ for indice, fila in res.iterrows():
 )
 
     with col_edit:
+        st.markdown(
+    "<div style='height:28px'></div>",
+    unsafe_allow_html=True
+)
 
         if st.button(
             "Editar",
