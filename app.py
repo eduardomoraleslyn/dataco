@@ -97,7 +97,8 @@ def modal_editar_contacto(indice_fila, datos_actuales):
         ed_gen = c1.selectbox("Género", ["Masculino", "Femenino", "No especificado"], index=0)
         ed_dir = c2.text_input("Dirección general", value=str(datos_actuales.iloc[7]))
         if st.form_submit_button("Actualizar datos"):
-            df_global = pd.read_csv(archivo_csv, on_bad_lines='skip')
+            # ARREGLADO: Agregamos encoding='latin1' aquí para evitar el error al guardar cambios
+            df_global = pd.read_csv(archivo_csv, on_bad_lines='skip', encoding='latin1')
             df_global.loc[indice_fila, df_global.columns[:9]] = [ed_id, ed_nom, ed_cor, ed_cen, ed_pue, ed_seg, ed_gen, ed_dir, str(datos_actuales.iloc[8])]
             guardar_dataframe(df_global)
             st.session_state.modal_editar_abierto = False
@@ -113,7 +114,8 @@ def modal_eliminar_contacto(indice_fila, nombre_colaborador):
         st.session_state.modal_eliminar_abierto = False
         st.rerun()
     if c2.button("Sí, eliminar", use_container_width=True, type="primary"):
-        df_global = pd.read_csv(archivo_csv, on_bad_lines='skip')
+        # ARREGLADO: Agregamos encoding='latin1' aquí también para proteger la función de borrar
+        df_global = pd.read_csv(archivo_csv, on_bad_lines='skip', encoding='latin1')
         df_global = df_global.drop(indice_fila).reset_index(drop=True)
         guardar_dataframe(df_global)
         st.session_state.modal_eliminar_abierto = False
