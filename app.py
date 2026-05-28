@@ -847,7 +847,6 @@ else:
             '</div>',
             unsafe_allow_html=True
         )
-
 # =========================================================
 # EXPORT
 # =========================================================
@@ -856,11 +855,11 @@ st.write("---")
 
 st.write("### Herramientas de difusión directa")
 
-correos = "; ".join(
-    res["Email"].dropna().astype(str).tolist()
-)
-
 c1, espacio, c2 = st.columns([1, 0.08, 1])
+
+# =========================================================
+# BOTÓN EXPORTAR
+# =========================================================
 
 with c1:
 
@@ -870,6 +869,10 @@ with c1:
         file_name="Base de datos.xlsx",
         use_container_width=True
     )
+
+# =========================================================
+# BOTÓN COPIAR CORREOS
+# =========================================================
 
 with c2:
 
@@ -884,60 +887,89 @@ with c2:
     )
 
     correos_texto = "; ".join(correos_unicos)
-    correos_js = json.dumps(correos_texto)
 
     components.html(
-    f"""
-    <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@500;600&display=swap" rel="stylesheet">
+        f"""
+        <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@500&display=swap" rel="stylesheet">
 
-    <button
-        style="
-            width:100%;
-            height:38px;
-            background-color:#898989;
-            color:white;
-            border:none;
-            border-radius:10px;
-            font-weight:500;
-            font-size:14px;
-            font-family:'Google Sans Flex',sans-serif;
-            letter-spacing:0px;
-            cursor:pointer;
-            box-shadow:none;
-        "
+        <button
+            id="btn-copy"
             onclick='
-                navigator.clipboard.writeText({correos_js});
-                const aviso = document.getElementById("aviso-copy-correos");
-                aviso.style.display = "block";
-                setTimeout(function() {{
-                    aviso.style.display = "none";
+                navigator.clipboard.writeText({json.dumps(correos_texto)});
+
+                const aviso = document.getElementById("copy-msg");
+
+                aviso.style.opacity = "1";
+
+                setTimeout(() => {{
+                    aviso.style.opacity = "0";
                 }}, 2000);
             '
         >
             Copiar correos ({len(correos_unicos)})
         </button>
 
-        <div
-            id="aviso-copy-correos"
-            style="
-                display:none;
-                margin-top:8px;
-                padding:10px 12px;
-                border-radius:10px;
-                background:#DCFCE7;
-                color:#166534;
-                font-weight:600;
-                font-size:14px;
-                text-align:center;
-                font-family:sans-serif;
-            "
-        >
+        <div id="copy-msg">
             Ya puedes pegar tus contactos!
         </div>
-        """,
-        height=90
-    )
 
+        <style>
+
+        body {{
+            margin:0;
+            padding:0;
+            overflow:hidden;
+            font-family:'Google Sans Flex', sans-serif;
+        }}
+
+        #btn-copy {{
+
+            width:100%;
+            height:38px;
+
+            border:none;
+            border-radius:10px;
+
+            background:#898989;
+            color:white;
+
+            font-size:14px;
+            font-weight:500;
+
+            cursor:pointer;
+
+            transition:0.15s ease;
+        }}
+
+        #btn-copy:hover {{
+            background:#7d7d7d;
+        }}
+
+        #copy-msg {{
+
+            opacity:0;
+
+            margin-top:8px;
+
+            background:#DCFCE7;
+            color:#166534;
+
+            border-radius:10px;
+
+            padding:10px 12px;
+
+            text-align:center;
+
+            font-size:13px;
+            font-weight:600;
+
+            transition:0.2s ease;
+        }}
+
+        </style>
+        """,
+        height=80
+    )
 # =========================================================
 # CARDS
 # =========================================================
