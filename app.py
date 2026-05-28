@@ -442,21 +442,13 @@ def modal_editar_contacto(indice_fila, datos_actuales):
             "Puesto",
             value=str(datos_actuales["Puesto"])
         )
-
-        opciones_segmento = ["Corporativo y Planta", "Sucursal", "Otro"]
-
-segmento_actual = str(datos_actuales["Segmento"])
-
-ed_seg = c2.selectbox(
-            opciones_segmento = [
+        opciones_segmento = [
             "Corporativo y Planta",
             "Sucursal",
             "Otro"
         ]
 
-        segmento_actual = str(
-            datos_actuales["Segmento"]
-        )
+        segmento_actual = str(datos_actuales["Segmento"])
 
         ed_seg = c2.selectbox(
             "Segmento",
@@ -471,9 +463,7 @@ ed_seg = c2.selectbox(
             "No especificado"
         ]
 
-        genero_actual = str(
-            datos_actuales["Genero"]
-        )
+        genero_actual = str(datos_actuales["Genero"])
 
         ed_gen = c1.selectbox(
             "Género",
