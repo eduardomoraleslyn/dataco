@@ -241,8 +241,9 @@ if not os.path.exists(archivo_excel):
     pd.DataFrame(columns=COLUMNAS)
 
 try:
-    df = pd.read_excel(
+    df.to_excel(
     archivo_excel,
+    index=False,
     engine='openpyxl'
 )
 
