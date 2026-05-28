@@ -174,7 +174,7 @@ def modal_nuevo_contacto():
     n_dir,
     n_ing.strftime("%d/%m/%Y")
 ]], columns=COLUMNAS)
-                nueva_fila.to_excel(archivo_csv, mode='a', header=not os.path.exists(archivo_csv), index=False, quoting=csv.QUOTE_ALL, encoding='latin1')
+                nueva_fila.to_excel(archivo_csv, mode='a', header=not os.path.exists(archivo_csv), index=False, quoting=csv.QUOTE_ALL, )
                 time.sleep(0.4)
                 st.session_state.mostrar_confirmacion = True
                 st.rerun()
@@ -200,7 +200,7 @@ def modal_editar_contacto(indice_fila, datos_actuales):
         ed_gen = c1.selectbox("Género", ["Masculino", "Femenino", "No especificado"], index=0)
         ed_dir = c2.text_input("Dirección general", value=str(datos_actuales.iloc[7]))
         if st.form_submit_button("Actualizar datos"):
-            df_global = pd.read_excel(archivo_csv, on_bad_lines='skip', encoding='latin1')
+            df_global = pd.read_excel(archivo_csv, on_bad_lines='skip', )
             # SOLUCIÓN: Forzamos a recortar a las primeras 9 columnas antes de inyectar los nuevos datos editados
             df_global = df_global.iloc[:, :9]
             df_global.columns = COLUMNAS
@@ -219,7 +219,7 @@ def modal_eliminar_contacto(indice_fila, nombre_colaborador):
         st.session_state.modal_eliminar_abierto = False
         st.rerun()
     if c2.button("Sí, eliminar", use_container_width=True, type="primary"):
-        df_global = pd.read_excel(archivo_csv, on_bad_lines='skip', encoding='latin1')
+        df_global = pd.read_excel(archivo_csv, on_bad_lines='skip', )
         df_global = df_global.drop(indice_fila).reset_index(drop=True)
         guardar_dataframe(df_global)
         st.session_state.modal_eliminar_abierto = False
