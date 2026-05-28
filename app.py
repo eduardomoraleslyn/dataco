@@ -180,28 +180,27 @@ button[kind="primary"] {
     margin-top: 15px !important;
 }
 
+.wrapper-btn-editar button,
+.wrapper-btn-borrar button {
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    font-size: 0.78rem !important;
+    border: none !important;
+    height: 28px !important;
+    width: 100% !important;
+    box-shadow: none !important;
+    margin-top: -10px !important;
+    margin-bottom: 14px !important;
+}
+
 .wrapper-btn-editar button {
     background-color: #FFDE21 !important;
     color: #333333 !important;
-    border-radius: 6px !important;
-    font-weight: 600 !important;
-    font-size: 0.85rem !important;
-    border: none !important;
-    height: 32px !important;
-    width: 100% !important;
-    box-shadow: none !important;
 }
 
 .wrapper-btn-borrar button {
     background-color: #ed1c24 !important;
     color: white !important;
-    border-radius: 6px !important;
-    font-weight: 600 !important;
-    font-size: 0.85rem !important;
-    border: none !important;
-    height: 32px !important;
-    width: 100% !important;
-    box-shadow: none !important;
 }
 
 .btn-difusion-premium {
