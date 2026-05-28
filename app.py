@@ -1029,6 +1029,7 @@ with col_botones_cards:
     </div>
 
 </div>
+        """,
         height=110
     )
 
