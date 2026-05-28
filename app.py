@@ -310,17 +310,6 @@ a[href^="#"] {
 # HELPERS
 # =========================================================
 
-def crear_excel():
-
-    if not os.path.exists(archivo_excel):
-
-        df_vacio = pd.DataFrame(columns=COLUMNAS)
-
-        df_vacio.to_excel(
-            archivo_excel,
-            index=False,
-            engine='openpyxl'
-        )
 
 def cargar_datos():
 
