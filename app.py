@@ -977,7 +977,7 @@ with col_botones_cards:
     ¡Ya puedes pegar tus contactos!
 </div>
         """,
-        height=72
+        height=110
     )
 
 for indice, fila in res.iterrows():
