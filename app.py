@@ -524,37 +524,30 @@ def modal_editar_contacto(indice_fila, datos_actuales):
             st.session_state.modal_editar_abierto = False
 
             st.rerun()
+@st.dialog("Confirmar eliminación")
 def modal_eliminar_contacto(indice_fila, nombre_colaborador):
 
-    st.write(
-        f"¿Deseas eliminar permanentemente a **{nombre_colaborador}**?"
-    )
+    st.write("¿Estás seguro de borrar este contacto?")
+    st.write(f"**{nombre_colaborador}**")
 
     c1, c2 = st.columns(2)
 
-    if c1.button("Cancelar", use_container_width=True):
+    with c1:
+        if st.button("Cancelar", use_container_width=True):
+            st.session_state.modal_eliminar_abierto = False
+            st.session_state.fila_seleccionada_idx = None
+            st.rerun()
 
-        st.session_state.modal_eliminar_abierto = False
+    with c2:
+        if st.button("Seguro", use_container_width=True, type="primary"):
+            df_global = cargar_datos()
+            df_global = df_global.drop(indice_fila).reset_index(drop=True)
+            guardar_dataframe(df_global)
 
-        st.rerun()
-
-    if c2.button(
-        "Sí, eliminar",
-        use_container_width=True,
-        type="primary"
-    ):
-
-        df_global = cargar_datos()
-
-        df_global = df_global.drop(indice_fila).reset_index(drop=True)
-
-        guardar_dataframe(df_global)
-
-        st.session_state.modal_eliminar_abierto = False
-
-        st.session_state.mostrar_eliminado = True
-
-        st.rerun()
+            st.session_state.modal_eliminar_abierto = False
+            st.session_state.fila_seleccionada_idx = None
+            st.session_state.mostrar_eliminado = True
+            st.rerun()
 
 @st.dialog("Registro eliminado")
 def modal_eliminado_exitoso():
