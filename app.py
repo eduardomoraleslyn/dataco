@@ -719,6 +719,22 @@ entrada = st.text_input(
     placeholder="Escribe para realizar tu búsqueda..."
 ).strip().lower()
 
+def normalizar_texto(texto):
+
+    if pd.isna(texto):
+        return ""
+
+    texto = str(texto).lower().strip()
+
+    texto = unicodedata.normalize("NFKD", texto)
+
+    texto = "".join(
+        c for c in texto
+        if not unicodedata.combining(c)
+    )
+
+    return texto
+    
 if entrada:
 
     entrada = entrada.strip().lower()
