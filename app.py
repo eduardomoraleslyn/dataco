@@ -910,7 +910,7 @@ for indice, fila in res.iterrows():
 
                     st.rerun()
 
-            with col_delete:
+    with col_delete:
 
                 if st.button(
                     "Borrar",
