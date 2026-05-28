@@ -175,6 +175,11 @@ div[data-testid="stDownloadButton"] button {
 
     transition:all 0.15s ease !important;
 }
+div[data-testid="stDownloadButton"] button:hover {
+
+    background-color:#7f7f7f !important;
+
+}
 
 button[kind="primary"] {
     background-color: #ed1c24 !important;
