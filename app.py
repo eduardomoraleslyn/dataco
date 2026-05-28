@@ -464,7 +464,7 @@ def modal_editar_contacto(indice_fila, datos_actuales):
             use_container_width=True
         ):
 
-            if st.form_submit_button(
+         if st.form_submit_button(
 
     "Actualizar datos",
     type="primary",
