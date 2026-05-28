@@ -130,6 +130,13 @@ h1 {
     margin-bottom: 12px;
 }
 
+.card-name {
+    color: #1E3A8A;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.6px;
+}
+
 .badge-lyncott {
     background-color: #EFF6FF !important;
     color: #1E40AF !important;
