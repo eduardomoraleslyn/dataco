@@ -28,7 +28,7 @@ COLUMNAS = [
     "Ingreso"
 ]
 
-# =========================================================
+# =========================================================if entrada:
 # SESSION STATE
 # =========================================================
 
@@ -659,9 +659,23 @@ entrada = st.text_input(
 
 if entrada:
 
+    alias_busqueda = {
+        "cyp": "corporativo y planta",
+        "corp": "corporativo y planta",
+        "corporativo": "corporativo y planta",
+        "corporativo y planta": "corporativo y planta",
+        "suc": "sucursal",
+        "sucs": "sucursal",
+        "sucursal": "sucursal",
+        "sucursales": "sucursal",
+        "otro": "otro"
+    }
+
+    termino_busqueda = alias_busqueda.get(entrada, entrada)
+
     mascara = df.astype(str).apply(
         lambda x: x.str.lower().str.contains(
-            entrada,
+            termino_busqueda,
             na=False
         )
     ).any(axis=1)
