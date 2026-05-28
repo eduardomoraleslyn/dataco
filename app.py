@@ -644,7 +644,6 @@ with col_tit:
 with col_btn:
 
     st.write("")
-
     if st.button(
     "＋ Alta de usuario",
     key="btn_alta",
