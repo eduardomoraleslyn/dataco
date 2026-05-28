@@ -304,17 +304,43 @@ a[href^="#"] {
 </style>
 """, unsafe_allow_html=True)
 
+```python
 # =========================================================
 # HELPERS
 # =========================================================
 
+def conectar_sheet():
+
+    scope = [
+        "https://spreadsheets.google.com/feeds",
+        "https://www.googleapis.com/auth/drive"
+    ]
+
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(
+        st.secrets["gcp_service_account"],
+        scope
+    )
+
+    client = gspread.authorize(creds)
+
+    sheet = client.open_by_key(SHEET_ID).worksheet("contactos")
+
+    return sheet
 
 
+def cargar_datos():
 
-    # LIMPIAR ESPACIOS
+    sheet = conectar_sheet()
+
+    df = get_as_dataframe(
+        sheet,
+        evaluate_formulas=True
+    )
+
+    df = df.dropna(how="all")
+
     df.columns = df.columns.str.strip()
 
-    # MAPEO FLEXIBLE
     mapa_columnas = {
         "ID": "ID",
         "ID empleado": "ID",
@@ -338,25 +364,36 @@ a[href^="#"] {
 
         "Direccion": "Direccion",
         "Dirección": "Direccion",
-        "Dirección general": "Direccion",
 
-        "Ingreso": "Ingreso",
-        "Fecha de ingreso": "Ingreso"
+        "Ingreso": "Ingreso"
     }
 
-    # RENOMBRAR SEGÚN MAPA
     df = df.rename(columns=mapa_columnas)
 
-    # ASEGURAR COLUMNAS
     for col in COLUMNAS:
 
         if col not in df.columns:
             df[col] = ""
 
-    # ORDENAR
     df = df[COLUMNAS]
 
     return df
+
+
+def guardar_dataframe(dataframe):
+
+    sheet = conectar_sheet()
+
+    sheet.clear()
+
+    set_with_dataframe(
+        sheet,
+        dataframe,
+        include_index=False,
+        include_column_header=True,
+        resize=True
+    )
+```
 
 
 # =========================================================
