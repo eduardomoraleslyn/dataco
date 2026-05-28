@@ -206,18 +206,39 @@ def crear_csv_si_no_existe():
 
 @st.cache_data
 def cargar_datos():
+
     crear_csv_si_no_existe()
 
-    df = pd.read_csv(
-        ARCHIVO_CSV,
-        encoding='utf-8-sig',
-        on_bad_lines='skip'
-    )
+    try:
+
+        df = pd.read_csv(
+            ARCHIVO_CSV,
+            encoding='utf-8-sig',
+            on_bad_lines='skip'
+        )
+
+    except UnicodeDecodeError:
+
+        df = pd.read_csv(
+            ARCHIVO_CSV,
+            encoding='latin1',
+            on_bad_lines='skip'
+        )
+
+        # RE-GUARDAMOS AUTOMÁTICAMENTE EN UTF8
+        df.to_csv(
+            ARCHIVO_CSV,
+            index=False,
+            encoding='utf-8-sig',
+            quoting=csv.QUOTE_ALL
+        )
 
     columnas_actuales = list(df.columns)
 
-    if columnas_actuales != COLUMNAS:
+    if len(columnas_actuales) != len(COLUMNAS):
+
         df = df.iloc[:, :len(COLUMNAS)]
+
         df.columns = COLUMNAS
 
     return df
