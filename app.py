@@ -27,11 +27,10 @@ st.markdown("""
     .metric-container-horizontal { display: flex; flex-direction: column; justify-content: center; height: 100%; padding-left: 10px; }
     .metric-label-custom { font-weight: 300 !important; font-size: 0.9rem !important; color: #64748B !important; line-height: 1.2; margin-bottom: 4px; }
     .metric-value-custom { font-weight: 700 !important; font-size: 1.6rem !important; color: #0F172A !important; line-height: 1; }
-    .contact-card { background-color: white; padding: 1.5rem; border-radius: 12px 12px 0px 0px; border-left: 5px solid #1E40AF; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 0px; }
-    .contact-card-buttons { background-color: white; padding: 0rem 1.5rem 1.2rem 1.5rem; border-radius: 0px 0px 12px 12px; border-left: 5px solid #1E40AF; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    .contact-card { background-color: white; padding: 1.5rem; border-radius: 12px; border-left: 5px solid #1E40AF; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 15px; }
     .card-name { color: #1E3A8A; font-size: 1.2rem; font-weight: 700; letter-spacing: -0.5px; }
     .card-puesto { color: #475569; font-weight: 600; font-size: 0.95rem; margin-bottom: 0.5rem; }
-    .card-meta { color: #64748B; font-size: 0.85rem; }
+    .card-meta { color: #64748B; font-size: 0.85rem; margin-bottom: 12px; }
     div[data-testid="InputInstructions"] { display: none !important; }
     
     div[data-testid="stDownloadButton"] button {
@@ -245,25 +244,23 @@ else:
         for indice, fila in res.iterrows():
             indice_original = df[df['ID'] == fila['ID']].index[0]
             
-            # Dibujamos los datos de la tarjeta blanca
-            st.markdown(f'<div class="contact-card"><div style="display: flex; justify-content: space-between; align-items: center; width: 100%;"><div class="card-name">{fila["Nombre"]} <span style="color:#94A3B8; font-size:0.85rem; font-weight:400;">({fila["ID"]})</span></div><div><span class="badge-lyncott">{fila["Segmento"]}</span></div></div><div class="contact-card-body" style="margin-top: 5px;"><div class="card-puesto">Puesto: {fila["Puesto"]}</div><div class="card-meta">Correo: {fila["Email"]} | Centro: {fila["Centro"]} | Dirección: {fila["Direccion"]}</div></div></div>', unsafe_allow_html=True)
-            
-            # Dibujamos el renglón de los botones perfectamente incorporados abajo del recuadro blanco
-            st.markdown('<div class="contact-card-buttons">', unsafe_allow_html=True)
-            c_b1, c_b2, c_spacer = st.columns([1, 1, 4])
-            with c_b1:
-                st.markdown('<div class="wrapper-btn-editar">', unsafe_allow_html=True)
-                if st.button("Editar Colaborador", key=f"btn_edit_{fila['ID']}", use_container_width=True):
-                    st.session_state.fila_seleccionada_idx = int(indice_original)
-                    st.session_state.modal_editar_abierto = True
-                    st.rerun()
-                st.markdown('</div>', unsafe_allow_html=True)
-            with c_b2:
-                st.markdown('<div class="wrapper-btn-borrar">', unsafe_allow_html=True)
-                if st.button("Borrar Registro", key=f"btn_del_{fila['ID']}", use_container_width=True):
-                    st.session_state.fila_seleccionada_idx = int(indice_original)
-                    st.session_state.modal_eliminar_abierto = True
-                    st.rerun()
-                st.markdown('</div>', unsafe_allow_html=True)
-            st.markdown('</div>', unsafe_allow_html=True)
-            st.markdown("<div style='margin-bottom: 20px;'></div>", unsafe_allow_html=True)
+            # Encapsulamos todo en un único contenedor con bordes para armar la tarjeta blanca limpia
+            with st.container():
+                st.markdown(f'<div class="contact-card"><div style="display: flex; justify-content: space-between; align-items: center; width: 100%;"><div class="card-name">{fila["Nombre"]} <span style="color:#94A3B8; font-size:0.85rem; font-weight:400;">({fila["ID"]})</span></div><div><span class="badge-lyncott">{fila["Segmento"]}</span></div></div><div class="contact-card-body" style="margin-top: 5px;"><div class="card-puesto">Puesto: {fila["Puesto"]}</div><div class="card-meta">Correo: {fila["Email"]} | Centro: {fila["Centro"]} | Dirección: {fila["Direccion"]}</div></div></div>', unsafe_allow_html=True)
+                
+                # Desplegamos los botones en columnas simétricas exactamente abajo de la dirección y dentro del espacio blanco
+                c_b1, c_b2, c_spacer = st.columns([1, 1, 4.5])
+                with c_b1:
+                    st.markdown('<div class="wrapper-btn-editar" style="margin-top: -25px; margin-left: 20px; margin-bottom: 25px;">', unsafe_allow_html=True)
+                    if st.button("✏️ Editar", key=f"btn_edit_{fila['ID']}", use_container_width=True):
+                        st.session_state.fila_seleccionada_idx = int(indice_original)
+                        st.session_state.modal_editar_abierto = True
+                        st.rerun()
+                    st.markdown('</div>', unsafe_allow_html=True)
+                with c_b2:
+                    st.markdown('<div class="wrapper-btn-borrar" style="margin-top: -25px; margin-left: 10px; margin-bottom: 25px;">', unsafe_allow_html=True)
+                    if st.button("🗑️ Borrar", key=f"btn_del_{fila['ID']}", use_container_width=True):
+                        st.session_state.fila_seleccionada_idx = int(indice_original)
+                        st.session_state.modal_eliminar_abierto = True
+                        st.rerun()
+                    st.markdown('</div>', unsafe_allow_html=True)
