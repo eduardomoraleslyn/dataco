@@ -241,10 +241,12 @@ if not os.path.exists(archivo_excel):
     pd.DataFrame(columns=COLUMNAS)
 
 try:
-    df = pd.read_csv(
-        archivo_csv,
-        encoding='utf-8-sig',
-        on_bad_lines='skip'
+    df = pd.read_excel(
+    archivo_excel,
+    engine='openpyxl'
+)
+
+df = df.iloc[:, :9].copy()
     )
 
     df = df.iloc[:, :9]
