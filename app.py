@@ -663,7 +663,7 @@ with col_btn:
 
 st.markdown(
     """
-    <div style='margin-top:-32px; margin-bottom:-14px;'>
+    <div style='margin-top:-40px; margin-bottom:-18px;'>
         <hr>
     </div>
     """,
