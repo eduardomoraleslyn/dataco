@@ -854,7 +854,7 @@ for indice, fila in res.iterrows():
 
     <div class="contact-row-meta">
         {fila["Email"]} ·
-        {fila["Centro"]} ·
+        {str(fila["Centro"]).replace("Corporativo Y Planta", "Corporativo y Planta")} ·
         {fila["Direccion"]}
     </div>
     ''',
