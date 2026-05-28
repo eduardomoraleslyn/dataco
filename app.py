@@ -466,17 +466,17 @@ def modal_editar_contacto(indice_fila, datos_actuales):
 
             df_global = cargar_datos()
 
-            df_global.loc[indice_fila] = [
-                ed_id,
-                ed_nom,
-                ed_cor,
-                ed_cen,
-                ed_pue,
-                ed_seg,
-                ed_gen,
-                ed_dir,
-                str(datos_actuales["Ingreso"])
-            ]
+            df_global = df_global.astype("object")
+
+df_global.loc[indice_fila, "ID"] = ed_id
+df_global.loc[indice_fila, "Nombre"] = ed_nom
+df_global.loc[indice_fila, "Email"] = ed_cor
+df_global.loc[indice_fila, "Centro"] = ed_cen
+df_global.loc[indice_fila, "Puesto"] = ed_pue
+df_global.loc[indice_fila, "Segmento"] = ed_seg
+df_global.loc[indice_fila, "Genero"] = ed_gen
+df_global.loc[indice_fila, "Direccion"] = ed_dir
+df_global.loc[indice_fila, "Ingreso"] = str(datos_actuales["Ingreso"])
 
             guardar_dataframe(df_global)
 
