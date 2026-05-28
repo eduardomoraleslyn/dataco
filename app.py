@@ -854,25 +854,50 @@ with c1:
 
 with c2:
 
-    if st.button(
-        f"📋 Copiar correos ({len(res)})",
-        use_container_width=True
-    ):
+    correos_unicos = (
+        res["Email"]
+        .dropna()
+        .astype(str)
+        .unique()
+    )
 
-        correos_unicos = (
-            res["Email"]
-            .dropna()
-            .astype(str)
-            .unique()
-        )
+    correos_texto = "; ".join(correos_unicos)
 
-        correos_texto = "; ".join(correos_unicos)
+    st.markdown(
+        f"""
+        <button
+            class="btn-difusion-premium"
+            onclick="
+                navigator.clipboard.writeText(`{correos_texto}`);
+                const aviso = document.getElementById('aviso-copy-correos');
+                aviso.style.display = 'block';
+                setTimeout(() => {{
+                    aviso.style.display = 'none';
+                }}, 2000);
+            "
+        >
+            Copiar correos ({len(correos_unicos)})
+        </button>
 
-        st.code(correos_texto)
-
-        st.success(
-            "Correos listos para copiar ✨"
-        )
+        <div
+            id="aviso-copy-correos"
+            style="
+                display:none;
+                margin-top:8px;
+                padding:10px 12px;
+                border-radius:10px;
+                background:#DCFCE7;
+                color:#166534;
+                font-weight:600;
+                font-size:0.9rem;
+                text-align:center;
+            "
+        >
+            Ya puedes pegar tus contactos!
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 # =========================================================
 # CARDS
