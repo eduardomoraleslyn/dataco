@@ -847,41 +847,11 @@ c1, espacio, c2 = st.columns([1, 0.08, 1])
 
 with c1:
 
-    archivo_bytes = open(archivo_excel, "rb").read()
-
-    import base64
-
-    b64 = base64.b64encode(archivo_bytes).decode()
-
-    href = f'''
-    <a
-        href="data:application/octet-stream;base64,{b64}"
-        download="Base de datos.xlsx"
-        style="text-decoration:none;"
-    >
-        <button
-            style="
-                width:100%;
-                height:38px;
-                background-color:#898989;
-                color:white;
-                border:none;
-                border-radius:10px;
-                font-weight:500;
-                font-size:14px;
-                font-family:'Google Sans Flex','Inter',sans-serif;
-                letter-spacing:-0.2px;
-                cursor:pointer;
-            "
-        >
-            Exportar base Excel
-        </button>
-    </a>
-    '''
-
-    st.markdown(
-        href,
-        unsafe_allow_html=True
+    st.download_button(
+        "Exportar base Excel",
+        data=open(archivo_excel, "rb").read(),
+        file_name="Base de datos.xlsx",
+        use_container_width=True
     )
 
 with c2:
