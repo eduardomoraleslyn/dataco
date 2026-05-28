@@ -833,11 +833,6 @@ for indice, fila in res.iterrows():
         </span>
     </div>
 
-    <div style="margin-top:6px;">
-        <span class="badge-lyncott">
-            {fila["Segmento"]}
-        </span>
-    </div>
 
     <div class="contact-row-puesto">
         {fila["Puesto"]}
