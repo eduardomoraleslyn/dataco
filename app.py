@@ -870,22 +870,24 @@ with c2:
     correos_js = json.dumps(correos_texto)
 
     components.html(
-        f"""
-        <button
-            style="
-    width:100%;
-    height:38px;
-    background-color:#898989;
-    color:white;
-    border:none;
-    border-radius:10px;
-    font-weight:500;
-    font-size:14px;
-    font-family:'Google Sans Flex',sans-serif;
-    letter-spacing:0px;
-    cursor:pointer;
-    box-shadow:none;
-"
+    f"""
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@500;600&display=swap" rel="stylesheet">
+
+    <button
+        style="
+            width:100%;
+            height:38px;
+            background-color:#898989;
+            color:white;
+            border:none;
+            border-radius:10px;
+            font-weight:500;
+            font-size:14px;
+            font-family:'Google Sans Flex',sans-serif;
+            letter-spacing:0px;
+            cursor:pointer;
+            box-shadow:none;
+        "
             onclick='
                 navigator.clipboard.writeText({correos_js});
                 const aviso = document.getElementById("aviso-copy-correos");
