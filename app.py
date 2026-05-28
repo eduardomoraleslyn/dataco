@@ -330,7 +330,7 @@ def modal_eliminar_contacto(indice_fila, nombre_colaborador):
     st.markdown(
         """
         <div style="text-align:center; padding: 0.4rem 0 0.8rem 0;">
-            <div style="font-size:2rem;">🗑️</div>
+            <div style="font-size:2rem;">×</div>
             <h3 style="margin-bottom:0.4rem;">¿Borrar este contacto?</h3>
             <p style="color:#64748B; margin-top:0;">
                 Esta acción eliminará el registro de la base de datos.
