@@ -390,7 +390,6 @@ def guardar_dataframe(dataframe):
         include_column_header=True,
         resize=True
     )
-```
 
 
 # =========================================================
