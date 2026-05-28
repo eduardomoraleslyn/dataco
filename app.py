@@ -707,7 +707,48 @@ for indice, fila in res.iterrows():
 
         card_html = f"""
         <div class="contact-card">
-        ...
+
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                width:100%;
+            ">
+
+                <div class="card-name">
+                    {fila["Nombre"]}
+
+                    <span style="
+                        color:#94A3B8;
+                        font-size:0.85rem;
+                        font-weight:400;
+                    ">
+                        ({fila["ID"]})
+                    </span>
+                </div>
+
+                <div>
+                    <span class="badge-lyncott">
+                        {fila["Segmento"]}
+                    </span>
+                </div>
+
+            </div>
+
+            <div style="margin-top:8px;">
+
+                <div class="card-puesto">
+                    Puesto: {fila["Puesto"]}
+                </div>
+
+                <div class="card-meta">
+                    Correo: {fila["Email"]} |
+                    Centro: {fila["Centro"]} |
+                    Dirección: {fila["Direccion"]}
+                </div>
+
+            </div>
+
         </div>
         """
 
@@ -716,13 +757,13 @@ for indice, fila in res.iterrows():
             unsafe_allow_html=True
         )
 
-        c1, c2, _ = st.columns([1,1,4])
+        c1, c2, _ = st.columns([1, 1, 4])
 
         with c1:
 
             if st.button(
                 "Editar",
-                key=f"edit_{fila['ID']}_{indice}",
+                key=f"edit_unique_{indice}",
                 use_container_width=True
             ):
 
@@ -734,109 +775,10 @@ for indice, fila in res.iterrows():
 
             if st.button(
                 "Borrar",
-                key=f"del_{fila['ID']}_{indice}",
+                key=f"delete_unique_{indice}",
                 use_container_width=True
             ):
 
                 st.session_state.fila_seleccionada_idx = indice
                 st.session_state.modal_eliminar_abierto = True
                 st.rerun()
-
-            st.markdown(
-                '</div>',
-                unsafe_allow_html=True
-            )
-
-        c1, c2, _ = st.columns([1,1,4])
-
-        with c1:
-
-            st.markdown(
-                '<div class="wrapper-btn-editar">',
-                unsafe_allow_html=True
-            )
-
-            if st.button(
-                "Editar",
-                key=f"edit_{fila['ID']}_{indice}",
-                use_container_width=True
-            ):
-
-                st.session_state.fila_seleccionada_idx = indice
-
-                st.session_state.modal_editar_abierto = True
-
-                st.rerun()
-
-            st.markdown(
-                '</div>',
-                unsafe_allow_html=True
-            )
-
-        with c2:
-
-            st.markdown(
-                '<div class="wrapper-btn-borrar">',
-                unsafe_allow_html=True
-            )
-
-            if st.button(
-                "Borrar",
-                key=f"del_{fila['ID']}_{indice}",
-                use_container_width=True
-            ):
-
-                st.session_state.fila_seleccionada_idx = indice
-
-                st.session_state.modal_eliminar_abierto = True
-
-                st.rerun()
-
-            st.markdown(
-                '</div>',
-                unsafe_allow_html=True
-            )
-
-        c1, c2, _ = st.columns([1,1,4])
-
-        with c1:
-
-            st.markdown(
-                '<div class="wrapper-btn-editar">',
-                unsafe_allow_html=True
-            )
-
-            if st.button(
-                "Editar",
-                key=f"edit_{fila['ID']}_{indice}",
-                use_container_width=True
-            ):
-
-                st.session_state.fila_seleccionada_idx = indice
-
-                st.session_state.modal_editar_abierto = True
-
-                st.rerun()
-
-            st.markdown('</div>', unsafe_allow_html=True)
-
-        with c2:
-
-            st.markdown(
-                '<div class="wrapper-btn-borrar">',
-                unsafe_allow_html=True
-            )
-
-            if st.button(
-                "Borrar",
-                key=f"del_{fila['ID']}_{indice}",
-                use_container_width=True
-            ):
-
-                st.session_state.fila_seleccionada_idx = indice
-
-                st.session_state.modal_eliminar_abierto = True
-
-                st.rerun()
-
-            st.markdown('</div>', unsafe_allow_html=True)
