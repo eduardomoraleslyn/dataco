@@ -63,7 +63,11 @@ COLUMNAS = [
     "Ingreso"
 ]
 def guardar_dataframe(dataframe):
-    dataframe.to_csv(archivo_csv, index=False, quoting=csv.QUOTE_ALL, encoding='utf-8-sig')
+    dataframe.to_excel(
+        archivo_excel,
+        index=False,
+        engine='openpyxl'
+    )
 
 @st.dialog("Agregar nuevo colaborador")
 def modal_nuevo_contacto():
