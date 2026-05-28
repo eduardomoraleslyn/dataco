@@ -189,7 +189,7 @@ button[kind="primary"] {
     height: 28px !important;
     width: 100% !important;
     box-shadow: none !important;
-    margin-top: -10px !important;
+    margin-top: -4px !important;
     margin-bottom: 14px !important;
 }
 
