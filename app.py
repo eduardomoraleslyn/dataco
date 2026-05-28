@@ -443,9 +443,16 @@ def modal_editar_contacto(indice_fila, datos_actuales):
             value=str(datos_actuales["Puesto"])
         )
 
-        ed_seg = c2.selectbox(
-            "Segmento",
-            ["Corporativo y Planta", "Sucursal", "Otro"]
+        opciones_segmento = ["Corporativo y Planta", "Sucursal", "Otro"]
+
+segmento_actual = str(datos_actuales["Segmento"])
+
+ed_seg = c2.selectbox(
+    "Segmento",
+    opciones_segmento,
+    index=opciones_segmento.index(segmento_actual)
+    if segmento_actual in opciones_segmento else 0
+)
         )
 
         ed_gen = c1.selectbox(
