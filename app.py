@@ -20,7 +20,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-SHEET_ID = "AQUI_PEGA_EL_ID_DE_TU_SHEET"
+SHEET_ID = "1oGAqK9mz2CuOKDrUjfppQ6nFtjuBVxnJ5tbMv5y2_f4"
 
 COLUMNAS = [
     "ID",
