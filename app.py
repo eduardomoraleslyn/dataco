@@ -833,9 +833,33 @@ for indice, fila in res.iterrows():
 
     st.markdown('<div class="contact-row">', unsafe_allow_html=True)
 
-    col_info, col_edit, col_delete = st.columns([5.8, 0.55, 0.55])
+                col_info, col_edit, col_delete = st.columns([5.8, 0.55, 0.55])
 
-                with col_edit:
+            with col_info:
+
+                st.markdown(
+                    f'''
+                    <div class="contact-row-name">
+                        {fila["Nombre"]}
+                        <span class="contact-row-id">
+                            ({fila["ID"]})
+                        </span>
+                    </div>
+
+                    <div class="contact-row-puesto">
+                        {fila["Puesto"]}
+                    </div>
+
+                    <div class="contact-row-meta">
+                        {fila["Email"]} ·
+                        {str(fila["Centro"]).replace("Corporativo Y Planta", "Corporativo y Planta")} ·
+                        {fila["Direccion"]}
+                    </div>
+                    ''',
+                    unsafe_allow_html=True
+                )
+
+            with col_edit:
 
                 if st.button(
                     "Editar",
@@ -846,5 +870,19 @@ for indice, fila in res.iterrows():
                     st.session_state.fila_seleccionada_idx = indice
                     st.session_state.modal_editar_abierto = True
                     st.session_state.modal_eliminar_abierto = False
+
+                    st.rerun()
+
+            with col_delete:
+
+                if st.button(
+                    "Borrar",
+                    key=f"delete_unique_{indice}",
+                    use_container_width=True
+                ):
+
+                    st.session_state.fila_seleccionada_idx = indice
+                    st.session_state.modal_eliminar_abierto = True
+                    st.session_state.modal_editar_abierto = False
 
                     st.rerun()
