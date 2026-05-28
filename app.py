@@ -455,7 +455,7 @@ def modal_editar_contacto(indice_fila, datos_actuales):
 
         ed_dir = c2.text_input(
             "Dirección general",
-            value=str(datos_actuales["Direccion"])
+            value=str(datos_actuales["Área / Dirección"])
         )
 
         if st.form_submit_button("Actualizar datos"):
