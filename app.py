@@ -527,8 +527,35 @@ def modal_editar_contacto(indice_fila, datos_actuales):
 @st.dialog("Eliminar contacto")
 def modal_eliminar_contacto(indice_fila, nombre_colaborador):
 
-    st.write("¿Estás seguro de borrar este contacto?")
-    st.write(f"**{nombre_colaborador}**")
+    st.markdown(
+        """
+        <div style="text-align:center; padding: 0.4rem 0 0.8rem 0;">
+            <div style="font-size:2rem;">🗑️</div>
+            <h3 style="margin-bottom:0.4rem;">¿Borrar este contacto?</h3>
+            <p style="color:#64748B; margin-top:0;">
+                Esta acción eliminará el registro de la base de datos.
+            </p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        f"""
+        <div style="
+            background:#F8FAFC;
+            border-radius:12px;
+            padding:0.9rem 1rem;
+            margin-bottom:1rem;
+            text-align:center;
+            font-weight:700;
+            color:#0F172A;
+        ">
+            {nombre_colaborador}
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     c1, c2 = st.columns(2)
 
@@ -548,17 +575,6 @@ def modal_eliminar_contacto(indice_fila, nombre_colaborador):
             st.session_state.fila_seleccionada_idx = None
             st.session_state.mostrar_eliminado = True
             st.rerun()
-
-@st.dialog("Registro eliminado")
-def modal_eliminado_exitoso():
-
-    st.success("Contacto eliminado exitosamente.")
-
-    if st.button("Cerrar", use_container_width=True):
-
-        st.session_state.mostrar_eliminado = False
-
-        st.rerun()
 
 # =========================================================
 # DATA
