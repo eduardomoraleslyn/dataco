@@ -704,27 +704,37 @@ st.write(
 
 for indice, fila in res.iterrows():
 
+    for indice, fila in res.iterrows():
+
     with st.container():
 
-        st.markdown(f"""
+        card_html = f"""
         <div class="contact-card">
 
             <div style="
                 display:flex;
                 justify-content:space-between;
                 align-items:center;
+                width:100%;
             ">
 
                 <div class="card-name">
                     {fila["Nombre"]}
-                    <span style="color:#94A3B8;font-size:0.85rem;">
+
+                    <span style="
+                        color:#94A3B8;
+                        font-size:0.85rem;
+                        font-weight:400;
+                    ">
                         ({fila["ID"]})
                     </span>
                 </div>
 
-                <span class="badge-lyncott">
-                    {fila["Segmento"]}
-                </span>
+                <div>
+                    <span class="badge-lyncott">
+                        {fila["Segmento"]}
+                    </span>
+                </div>
 
             </div>
 
@@ -743,16 +753,16 @@ for indice, fila in res.iterrows():
             </div>
 
         </div>
-        """, unsafe_allow_html=True)
+        """
 
-        c1, c2, _ = st.columns([1,1,4])
+        st.markdown(
+            card_html,
+            unsafe_allow_html=True
+        )
+
+        c1, c2, _ = st.columns([1, 1, 4])
 
         with c1:
-
-            st.markdown(
-                '<div class="wrapper-btn-editar">',
-                unsafe_allow_html=True
-            )
 
             if st.button(
                 "Editar",
@@ -763,6 +773,20 @@ for indice, fila in res.iterrows():
                 st.session_state.fila_seleccionada_idx = indice
 
                 st.session_state.modal_editar_abierto = True
+
+                st.rerun()
+
+        with c2:
+
+            if st.button(
+                "Borrar",
+                key=f"del_{indice}",
+                use_container_width=True
+            ):
+
+                st.session_state.fila_seleccionada_idx = indice
+
+                st.session_state.modal_eliminar_abierto = True
 
                 st.rerun()
 
