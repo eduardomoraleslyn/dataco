@@ -2,547 +2,266 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import os
-import csv
-import re
 import time
+import csv
 
-# =========================================================
-# CONFIG
-# =========================================================
+st.set_page_config(page_title="Comunicación organizacional", layout="wide", initial_sidebar_state="collapsed")
 
-st.set_page_config(
-    page_title="Comunicación organizacional",
-    layout="wide",
-    initial_sidebar_state="collapsed"
-)
-
-ARCHIVO_CSV = "Base de datos.csv"
-
-COLUMNAS = [
-    "ID",
-    "Nombre",
-    "Email",
-    "Centro",
-    "Puesto",
-    "Segmento",
-    "Genero",
-    "Direccion",
-    "Ingreso"
-]
-
-SEGMENTOS = [
-    "Corporativo y Planta",
-    "Sucursal",
-    "Otro"
-]
-
-GENEROS = [
-    "Masculino",
-    "Femenino",
-    "No especificado"
-]
-
-# =========================================================
-# SESSION STATE
-# =========================================================
-
-for key in [
-    "mostrar_confirmacion",
-    "mostrar_eliminado",
-    "modal_editar_abierto",
-    "modal_eliminar_abierto",
-    "fila_seleccionada_idx"
-]:
-    if key not in st.session_state:
-        st.session_state[key] = False if "mostrar" in key or "modal" in key else None
-
-# =========================================================
-# CSS
-# =========================================================
+if "mostrar_confirmacion" not in st.session_state: st.session_state.mostrar_confirmacion = False
+if "mostrar_eliminado" not in st.session_state: st.session_state.mostrar_eliminado = False
+if "modal_eliminar_abierto" not in st.session_state: st.session_state.modal_eliminar_abierto = False
+if "modal_editar_abierto" not in st.session_state: st.session_state.modal_editar_abierto = False
+if "fila_seleccionada_idx" not in st.session_state: st.session_state.fila_seleccionada_idx = None
 
 st.markdown("""
-<style>
-
-@import url('https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@300;400;500;600;700&display=swap');
-
-html, body, .stApp {
-    font-family: 'Google Sans Flex', sans-serif !important;
-}
-
-.main {
-    background-color: #F8FAFC;
-}
-
-h1 {
-    color: #0F172A !important;
-    font-weight: 500 !important;
-}
-
-.contact-card {
-    background: white;
-    padding: 1.4rem;
-    border-radius: 14px;
-    border-left: 5px solid #ED1C24;
-    margin-bottom: 14px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-}
-
-.card-name {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #0F172A;
-}
-
-.card-meta {
-    color: #64748B;
-    margin-top: 6px;
-}
-
-.badge {
-    background: #EFF6FF;
-    color: #1E40AF;
-    padding: 5px 12px;
-    border-radius: 999px;
-    font-size: 0.8rem;
-    font-weight: 600;
-}
-
-</style>
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@300;400;500;600;700&display=swap');
+    .stApp, html, body, [data-testid="stMarkdownContainer"], button, input, select, h1, h2, h3, .stAlert {
+        font-family: 'Google Sans Flex', sans-serif !important;
+    }
+    .main { background-color: #F8FAFC; }
+    h1 { color: #0F172A !important; font-weight: 400 !important; letter-spacing: -0.5px !important; margin-bottom: 0px !important; padding-bottom: 0px !important;}
+    .subtitle-corp { color: #475569 !important; font-size: 1.3rem !important; font-weight: 500 !important; margin-top: -5px !important; margin-bottom: 20px !important; }
+    .analytics-panel { background-color: white; padding: 1.5rem 2rem; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 20px; }
+    .analytics-title { font-size: 1.2rem; font-weight: 600; color: #0F172A; margin-bottom: 1rem; line-height: 1.2; }
+    .metric-container-horizontal { display: flex; flex-direction: column; justify-content: center; height: 100%; padding-left: 10px; }
+    .metric-label-custom { font-weight: 300 !important; font-size: 0.9rem !important; color: #64748B !important; line-height: 1.2; margin-bottom: 4px; }
+    .metric-value-custom { font-weight: 700 !important; font-size: 1.6rem !important; color: #0F172A !important; line-height: 1; }
+    .contact-card { background-color: white; padding: 1.5rem; border-radius: 12px; border-left: 5px solid #1E40AF; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 15px; }
+    .card-name { color: #1E3A8A; font-size: 1.2rem; font-weight: 700; letter-spacing: -0.5px; }
+    .card-puesto { color: #475569; font-weight: 600; font-size: 0.95rem; margin-bottom: 0.5rem; }
+    .card-meta { color: #64748B; font-size: 0.85rem; margin-bottom: 12px; }
+    div[data-testid="InputInstructions"] { display: none !important; }
+    
+    div[data-testid="stDownloadButton"] button {
+        background-color: #898989 !important; color: #3c3c3c !important; border: none !important; border-radius: 6px !important;
+        height: 38px !important; font-size: 14px !important; font-weight: 600 !important; width: 100% !important; box-shadow: none !important;
+    }
+    button[kind="primary"] { background-color: #ed1c24 !important; color: white !important; border: none !important; border-radius: 6px !important; height: 42px !important; font-size: 15px !important; font-weight: 700 !important; width: 100% !important; margin-top: 15px !important; }
+    .badge-lyncott { background-color: #EFF6FF !important; color: #1E40AF !important; padding: 3px 12px !important; border-radius: 20px !important; font-weight: 600 !important; font-size: 0.8rem !important; line-height: 1.2 !important; display: inline-block !important; margin-right: 6px !important; }
+    
+    .wrapper-btn-editar button { background-color: #FFDE21 !important; color: #333333 !important; border-radius: 6px !important; font-weight: 600 !important; font-size: 0.85rem !important; border: none !important; height: 32px !important; width: 100% !important; box-shadow: none !important; }
+    .wrapper-btn-editar button:hover { background-color: #e0c21b !important; }
+    .wrapper-btn-borrar button { background-color: #ed1c24 !important; color: white !important; border-radius: 6px !important; font-weight: 600 !important; font-size: 0.85rem !important; border: none !important; height: 32px !important; width: 100% !important; box-shadow: none !important; }
+    .wrapper-btn-borrar button:hover { background-color: #c8131d !important; }
+    
+    .btn-difusion-premium { width: 100% !important; height: 38px !important; background-color: #898989 !important; color: #3c3c3c !important; border: none !important; border-radius: 6px !important; font-weight: 600 !important; font-size: 14px !important; cursor: pointer !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; text-decoration: none !important; }
+    .hidden-copy-area { position: absolute; left: -9999px; top: -9999px; }
+    </style>
 """, unsafe_allow_html=True)
 
-# =========================================================
-# HELPERS
-# =========================================================
+archivo_csv = "Base de datos.csv"
+def guardar_dataframe(dataframe):
+    dataframe.to_csv(archivo_csv, index=False, quoting=csv.QUOTE_ALL, encoding='latin1')
 
-def validar_email(correo):
-    patron = r'^[\\w\\.-]+@[\\w\\.-]+\\.\\w+$'
-    return re.match(patron, correo)
-
-def crear_csv():
-
-    if not os.path.exists(ARCHIVO_CSV):
-
-        df = pd.DataFrame(columns=COLUMNAS)
-
-        df.to_csv(
-            ARCHIVO_CSV,
-            index=False,
-            encoding='utf-8-sig',
-            quoting=csv.QUOTE_ALL
-        )
-
-@st.cache_data
-def cargar_datos():
-
-    crear_csv()
-
-    try:
-
-        df = pd.read_csv(
-            ARCHIVO_CSV,
-            encoding='utf-8-sig'
-        )
-
-    except:
-
-        df = pd.read_csv(
-            ARCHIVO_CSV,
-            encoding='latin1'
-        )
-
-        df.to_csv(
-            ARCHIVO_CSV,
-            index=False,
-            encoding='utf-8-sig',
-            quoting=csv.QUOTE_ALL
-        )
-
-    df.columns = COLUMNAS
-
-    return df
-
-def guardar_datos(df):
-
-    df.to_csv(
-        ARCHIVO_CSV,
-        index=False,
-        encoding='utf-8-sig',
-        quoting=csv.QUOTE_ALL
-    )
-
-    st.cache_data.clear()
-
-# =========================================================
-# MODALES
-# =========================================================
-
-@st.dialog("Nuevo colaborador")
-def modal_nuevo():
-
-    with st.form("form_nuevo"):
-
+@st.dialog("Agregar nuevo colaborador")
+def modal_nuevo_contacto():
+    st.write("Ingresa los datos para actualizar la base corporativa.")
+    with st.form("form_alta"):
         c1, c2 = st.columns(2)
-
         n_id = c1.text_input("ID empleado")
-        n_nombre = c2.text_input("Nombre")
+        n_nom = c2.text_input("Nombre completo")
+        n_cor = c1.text_input("Correo electrónico")
+        n_cen = c2.text_input("Centro de trabajo")
+        n_pue = c1.text_input("Puesto")
+        n_seg = c2.selectbox("Segmento", ["Corporativo y Planta", "Sucursal", "Otro"])
+        n_gen = c1.selectbox("Género", ["Masculino", "Femenino", "No especificado"])
+        n_dir = c2.text_input("Dirección general")
+        n_ing = st.date_input("Fecha de ingreso")
+        if st.form_submit_button("Guardar contacto"):
+            if n_nom and n_cor:
+                nueva_fila = pd.DataFrame([[n_id, n_nom, n_cor, n_cen, n_pue, n_seg, n_gen, n_dir, n_ing.strftime("%d/%m/%Y")]])
+                nueva_fila.to_csv(archivo_csv, mode='a', header=not os.path.exists(archivo_csv), index=False, quoting=csv.QUOTE_ALL, encoding='latin1')
+                time.sleep(0.4)
+                st.session_state.mostrar_confirmacion = True
+                st.rerun()
+            else: st.error("El nombre y el correo son campos obligatorios.")
 
-        n_correo = c1.text_input("Correo")
-        n_centro = c2.text_input("Centro")
-
-        n_puesto = c1.text_input("Puesto")
-
-        n_segmento = c2.selectbox(
-            "Segmento",
-            SEGMENTOS
-        )
-
-        n_genero = c1.selectbox(
-            "Género",
-            GENEROS
-        )
-
-        n_direccion = c2.text_input(
-            "Dirección"
-        )
-
-        n_ingreso = st.date_input(
-            "Fecha ingreso"
-        )
-
-        submit = st.form_submit_button(
-            "Guardar"
-        )
-
-        if submit:
-
-            if not n_nombre:
-                st.error("Ingresa un nombre.")
-                return
-
-            if not validar_email(n_correo):
-                st.error("Correo inválido.")
-                return
-
-            df = cargar_datos()
-
-            nueva_fila = pd.DataFrame([{
-                "ID": n_id,
-                "Nombre": n_nombre,
-                "Email": n_correo,
-                "Centro": n_centro,
-                "Puesto": n_puesto,
-                "Segmento": n_segmento,
-                "Genero": n_genero,
-                "Direccion": n_direccion,
-                "Ingreso": n_ingreso.strftime("%d/%m/%Y")
-            }])
-
-            df = pd.concat(
-                [df, nueva_fila],
-                ignore_index=True
-            )
-
-            guardar_datos(df)
-
-            st.session_state.mostrar_confirmacion = True
-
-            st.rerun()
+@st.dialog("Proceso exitoso")
+def modal_confirmacion():
+    st.success("Contacto guardado exitosamente.")
+    if st.button("Entendido", use_container_width=True):
+        st.session_state.mostrar_confirmacion = False
+        st.rerun()
 
 @st.dialog("Editar colaborador")
-def modal_editar(indice, fila):
-
-    with st.form("form_editar"):
-
+def modal_editar_contacto(indice_fila, datos_actuales):
+    with st.form("form_edicion"):
         c1, c2 = st.columns(2)
-
-        ed_id = c1.text_input("ID", fila["ID"])
-        ed_nombre = c2.text_input("Nombre", fila["Nombre"])
-
-        ed_correo = c1.text_input("Correo", fila["Email"])
-        ed_centro = c2.text_input("Centro", fila["Centro"])
-
-        ed_puesto = c1.text_input("Puesto", fila["Puesto"])
-
-        ed_segmento = c2.selectbox(
-            "Segmento",
-            SEGMENTOS,
-            index=SEGMENTOS.index(fila["Segmento"])
-            if fila["Segmento"] in SEGMENTOS else 0
-        )
-
-        ed_genero = c1.selectbox(
-            "Género",
-            GENEROS,
-            index=GENEROS.index(fila["Genero"])
-            if fila["Genero"] in GENEROS else 0
-        )
-
-        ed_direccion = c2.text_input(
-            "Dirección",
-            fila["Direccion"]
-        )
-
-        submit = st.form_submit_button(
-            "Actualizar"
-        )
-
-        if submit:
-
-            df = cargar_datos()
-
-            df.loc[indice] = [
-                ed_id,
-                ed_nombre,
-                ed_correo,
-                ed_centro,
-                ed_puesto,
-                ed_segmento,
-                ed_genero,
-                ed_direccion,
-                fila["Ingreso"]
-            ]
-
-            guardar_datos(df)
-
+        ed_id = c1.text_input("ID empleado", value=str(datos_actuales.iloc[0]))
+        ed_nom = c2.text_input("Nombre completo", value=str(datos_actuales.iloc[1]))
+        ed_cor = c1.text_input("Correo electrónico", value=str(datos_actuales.iloc[2]))
+        ed_cen = c2.text_input("Centro de trabajo", value=str(datos_actuales.iloc[3]))
+        ed_pue = c1.text_input("Puesto", value=str(datos_actuales.iloc[4]))
+        ed_seg = c2.selectbox("Segmento", ["Corporativo y Planta", "Sucursal", "Otro"], index=0)
+        ed_gen = c1.selectbox("Género", ["Masculino", "Femenino", "No especificado"], index=0)
+        ed_dir = c2.text_input("Dirección general", value=str(datos_actuales.iloc[7]))
+        if st.form_submit_button("Actualizar datos"):
+            df_global = pd.read_csv(archivo_csv, on_bad_lines='skip', encoding='latin1')
+            # SOLUCIÓN: Forzamos a recortar a las primeras 9 columnas antes de inyectar los nuevos datos editados
+            df_global = df_global.iloc[:, :9]
+            df_global.columns = ["ID", "Nombre", "Email", "Centro", "Puesto", "Segmento", "Genero", "Direccion", "Ingreso"]
+            df_global.loc[indice_fila] = [ed_id, ed_nom, ed_cor, ed_cen, ed_pue, ed_seg, ed_gen, ed_dir, str(datos_actuales.iloc[8])]
+            guardar_dataframe(df_global)
             st.session_state.modal_editar_abierto = False
-
+            time.sleep(0.4)
             st.rerun()
 
-@st.dialog("Eliminar colaborador")
-def modal_eliminar(indice, nombre):
-
-    st.warning(
-        f"¿Eliminar a {nombre}?"
-    )
-
+@st.dialog("Confirmar eliminación")
+def modal_eliminar_contacto(indice_fila, nombre_colaborador):
+    st.write(f"¿Estás seguro de que deseas eliminar permanentemente a **{nombre_colaborador}**?")
+    st.write("")
     c1, c2 = st.columns(2)
-
-    if c1.button("Cancelar"):
+    if c1.button("Cancelar", use_container_width=True):
         st.session_state.modal_eliminar_abierto = False
         st.rerun()
-
-    if c2.button("Eliminar", type="primary"):
-
-        df = cargar_datos()
-
-        df = df.drop(indice).reset_index(drop=True)
-
-        guardar_datos(df)
-
+    if c2.button("Sí, eliminar", use_container_width=True, type="primary"):
+        df_global = pd.read_csv(archivo_csv, on_bad_lines='skip', encoding='latin1')
+        df_global = df_global.drop(indice_fila).reset_index(drop=True)
+        guardar_dataframe(df_global)
         st.session_state.modal_eliminar_abierto = False
-
+        time.sleep(0.4)
+        st.session_state.mostrar_eliminado = True
         st.rerun()
 
-# =========================================================
-# DATA
-# =========================================================
+@st.dialog("Registro eliminado")
+def modal_eliminado_exitoso():
+    st.success("Contacto eliminado exitosamente.")
+    if st.button("Cerrar", use_container_width=True):
+        st.session_state.mostrar_eliminado = False
+        st.rerun()
 
-df = cargar_datos()
+if st.session_state.mostrar_confirmacion: modal_confirmacion()
+if st.session_state.mostrar_eliminado: modal_eliminado_exitoso()
 
-# =========================================================
-# HEADER
-# =========================================================
+if not os.path.exists(archivo_csv):
+    pd.DataFrame(columns=["ID", "Nombre", "Email", "Centro", "Puesto", "Segmento", "Genero", "Direccion", "Ingreso"]).to_csv(archivo_csv, index=False, encoding='latin1')
 
-st.title("Comunicación organizacional")
+df_crudo = pd.read_csv(archivo_csv, on_bad_lines='skip', encoding='latin1')
+for col in df_crudo.select_dtypes(include=['object']).columns:
+    df_crudo[col] = df_crudo[col].astype(str).str.encode('latin1', errors='ignore').str.decode('utf-8', errors='ignore')
+df = df_crudo.iloc[:, :9].copy()
+df.columns = ["ID", "Nombre", "Email", "Centro", "Puesto", "Segmento", "Genero", "Direccion", "Ingreso"]
 
-st.caption(
-    "Base de datos corporativa"
-)
+if st.session_state.modal_editar_abierto and st.session_state.fila_seleccionada_idx is not None:
+    idx = st.session_state.fila_seleccionada_idx
+    if idx < len(df): modal_editar_contacto(idx, df.iloc[idx])
 
-if st.button(
-    "＋ Nuevo colaborador",
-    type="primary"
-):
-    modal_nuevo()
+if st.session_state.modal_eliminar_abierto and st.session_state.fila_seleccionada_idx is not None:
+    idx = st.session_state.fila_seleccionada_idx
+    if idx < len(df): modal_eliminar_contacto(idx, df.iloc[idx])
 
-# =========================================================
-# SEARCH
-# =========================================================
+if os.path.exists("logo.svg"): st.image("logo.svg", width=120)
 
-busqueda = st.text_input(
-    "Buscar colaborador"
-).strip().lower()
+col_tit, col_btn = st.columns([5, 1])
+with col_tit:
+    st.markdown('<h1>Comunicación organizacional</h1>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitle-corp">Base de datos de contactos</div>', unsafe_allow_html=True)
+with col_btn:
+    st.write("")
+    if st.button("＋ Alta de usuario", key="btn_alta", type="primary", use_container_width=True): modal_nuevo_contacto()
 
-if busqueda:
+st.write("---")
+alias_internos = {"ga": "gerente administrativo", "gv": "gerente de ventas", "dir": "director", "coord": "coordinador", "aux": "auxiliar", "cyp": "corporativo y planta"}
+entrada = st.text_input("Barra de búsqueda", placeholder="Escribe para realizar tu búsqueda...").strip().lower()
 
-    mascara = df.astype(str).apply(
-        lambda x: x.str.lower().str.contains(
-            busqueda,
-            na=False
-        )
-    ).any(axis=1)
-
-    res = df[mascara]
-
+if df.empty:
+    st.info("No hay datos disponibles. Agrega al primer colaborador.")
 else:
+    if entrada:
+        bloques = entrada.split()
+        mascara_final = pd.Series([True] * len(df))
+        tiene_prefijos = False
+        for logic_block in bloques:
+            if "mail:" in logic_block or "corr:" in logic_block:
+                tiene_prefijos = True
+                termino = logic_block.replace("mail:", "").replace("corr:", "").strip()
+                mascara_final = mascara_final & df.iloc[:, 2].astype(str).str.lower().str.contains(termino)
+            elif "gen:" in logic_block:
+                tiene_prefijos = True
+                termino = logic_block.replace("gen:", "").strip()
+                if termino == "m": termino = "masculino"
+                elif termino == "f": termino = "femenino"
+                mascara_final = mascara_final & df.iloc[:, 6].astype(str).str.lower().str.contains(termino)
+            elif "puesto:" in logic_block or "puest:" in logic_block:
+                tiene_prefijos = True
+                termino = logic_block.replace("puesto:", "").replace("puest:", "").strip()
+                termino = alias_internos.get(termino, termino)
+                for palabra in termino.split(): mascara_final = mascara_final & df.iloc[:, 4].astype(str).str.lower().str.contains(palabra)
+            elif "seg:" in logic_block:
+                tiene_prefijos = True
+                termino = logic_block.replace("seg:", "").strip()
+                termino = alias_internos.get(termino, termino)
+                mascara_final = mascara_final & df.iloc[:, 5].astype(str).str.lower().str.contains(termino)
+            elif "centro:" in logic_block:
+                tiene_prefijos = True
+                termino = logic_block.replace("centro:", "").strip()
+                mascara_final = mascara_final & df.iloc[:, 3].astype(str).str.lower().str.contains(termino)
+            elif "dir:" in logic_block:
+                tiene_prefijos = True
+                termino = logic_block.replace("dir:", "").strip()
+                mascara_final = mascara_final & df.iloc[:, 7].astype(str).str.lower().str.contains(termino)
+            else:
+                if tiene_prefijos: mascara_final = mascara_final & df.iloc[:, 4].astype(str).str.lower().str.contains(logic_block)
+        if not tiene_prefijos:
+            termino_busqueda = alias_internos.get(entrada, entrada)
+            mascara_final = df.astype(str).apply(lambda x: x.str.lower().str.contains(termino_busqueda)).any(axis=1)
+        res = df[mascara_final].copy()
+    else: res = df.copy()
+        
+    if res.empty: st.warning("⚠️ No se localizaron colaboradores.")
+    else:
+        with st.container():
+            st.markdown('<div class="analytics-panel">', unsafe_allow_html=True)
+            col_izq, col_der = st.columns([1.2, 1.3])
+            with col_izq:
+                st.markdown('<div class="analytics-title">Resumen estadístico de audiencia</div>', unsafe_allow_html=True)
+                columna_seg = res.iloc[:, 5].astype(str).str.lower()
+                conteo_corp = columna_seg.str.contains("corporativo").sum()
+                conteo_suc = columna_seg.str.contains("sucursal").sum()
+                c_m1, c_m2, c_m3 = st.columns(3)
+                with c_m1: st.markdown(f'<div class="metric-container-horizontal"><div class="metric-label-custom">Total de contactos</div><div class="metric-value-custom">{len(res)}</div></div>', unsafe_allow_html=True)
+                with c_m2: st.markdown(f'<div class="metric-container-horizontal"><div class="metric-label-custom">Corporativo y planta</div><div class="metric-value-custom">{conteo_corp}</div></div>', unsafe_allow_html=True)
+                with c_m3: st.markdown(f'<div class="metric-container-horizontal"><div class="metric-label-custom">Red de sucursales</div><div class="metric-value-custom">{conteo_suc}</div></div>', unsafe_allow_html=True)
+            with col_der:
+                st.markdown('<div class="analytics-title">Segmentación por centro de trabajo</div>', unsafe_allow_html=True)
+                df_bar = pd.DataFrame({"Segmento": ["Corporativo y planta", "Sucursal"], "Cantidad": [conteo_corp, conteo_suc]}).sort_values("Segmento", ascending=False)
+                fig = px.bar(df_bar, x="Cantidad", y="Segmento", orientation='h', color="Segmento", color_discrete_map={"Corporativo y planta": "#ED1C24", "Sucursal": "#00AAE9"}, text="Cantidad")
+                fig.update_layout(margin=dict(t=5, b=0, l=10, r=10), height=75, showlegend=False, paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', xaxis=dict(visible=False), yaxis=dict(title=None), font=dict(family="Google Sans Flex", size=13, color="#475569"), bargap=0.4)
+                fig.update_traces(textposition='outside', cliponaxis=False, textfont=dict(size=13, color="#0F172A", weight="bold"))
+                st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
+            st.markdown('</div>', unsafe_allow_html=True)
 
-    res = df
+        st.write("---")
+        st.write("### Herramientas de difusión directa")
+        correos = "; ".join(res.iloc[:, 2].dropna().astype(str).tolist())
+        c1, c2, c3 = st.columns(3)
+        with c1: st.download_button("Exportar base (CSV)", res.to_csv(index=False), "base.csv", use_container_width=True)
+        with c2: st.markdown(f'<a href="mailto:?bcc={correos}" target="_blank" style="text-decoration:none;"><button class="btn-difusion-premium">Abrir en Outlook ({len(res)})</button></a>', unsafe_allow_html=True)
+        with c3:
+            html_copiado_seguro = f'<textarea id="emails-box-{len(res)}" class="hidden-copy-area">{correos}</textarea><button id="btn-copy-master" class="btn-difusion-premium" onclick="var t=document.getElementById(\'emails-box-{len(res)}\'); t.select(); t.setSelectionRange(0,99999); document.execCommand(\'copy\'); this.innerText=\'Contactos copiados!\'; this.style.backgroundColor=\'#10B981\'; this.style.color=\'white\';">Copiar al portapapeles</button>'
+            st.markdown(html_copiado_seguro, unsafe_allow_html=True)
 
-# =========================================================
-# ANALYTICS
-# =========================================================
-
-st.write("---")
-
-columna_seg = res["Segmento"].astype(str).str.lower()
-
-conteo_corp = columna_seg.str.contains(
-    "corporativo"
-).sum()
-
-conteo_suc = columna_seg.str.contains(
-    "sucursal"
-).sum()
-
-c1, c2, c3 = st.columns(3)
-
-c1.metric(
-    "Total contactos",
-    len(res)
-)
-
-c2.metric(
-    "Corporativo",
-    conteo_corp
-)
-
-c3.metric(
-    "Sucursales",
-    conteo_suc
-)
-
-# =========================================================
-# CHART
-# =========================================================
-
-df_chart = pd.DataFrame({
-    "Segmento": [
-        "Corporativo",
-        "Sucursal"
-    ],
-    "Cantidad": [
-        conteo_corp,
-        conteo_suc
-    ]
-})
-
-fig = px.bar(
-    df_chart,
-    x="Cantidad",
-    y="Segmento",
-    orientation="h",
-    text="Cantidad"
-)
-
-fig.update_layout(
-    height=200,
-    showlegend=False
-)
-
-st.plotly_chart(
-    fig,
-    use_container_width=True
-)
-
-# =========================================================
-# EXPORT
-# =========================================================
-
-st.write("---")
-
-st.download_button(
-    "Exportar CSV",
-    res.to_csv(index=False),
-    "base.csv"
-)
-
-# =========================================================
-# CARDS
-# =========================================================
-
-st.write("---")
-
-for indice, fila in res.iterrows():
-
-    st.markdown(f"""
-    <div class="contact-card">
-
-        <div style="
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-        ">
-
-            <div class="card-name">
-                {fila["Nombre"]}
-            </div>
-
-            <div class="badge">
-                {fila["Segmento"]}
-            </div>
-
-        </div>
-
-        <div class="card-meta">
-            <b>ID:</b> {fila["ID"]}<br>
-            <b>Correo:</b> {fila["Email"]}<br>
-            <b>Centro:</b> {fila["Centro"]}<br>
-            <b>Puesto:</b> {fila["Puesto"]}
-        </div>
-
-    </div>
-    """, unsafe_allow_html=True)
-
-    c1, c2, _ = st.columns([1,1,4])
-
-    with c1:
-
-        if st.button(
-            "Editar",
-            key=f"edit_{indice}"
-        ):
-
-            st.session_state.modal_editar_abierto = True
-            st.session_state.fila_seleccionada_idx = indice
-
-            st.rerun()
-
-    with c2:
-
-        if st.button(
-            "Eliminar",
-            key=f"del_{indice}"
-        ):
-
-            st.session_state.modal_eliminar_abierto = True
-            st.session_state.fila_seleccionada_idx = indice
-
-            st.rerun()
-
-# =========================================================
-# MODALES ACTIVOS
-# =========================================================
-
-if (
-    st.session_state.modal_editar_abierto
-    and st.session_state.fila_seleccionada_idx is not None
-):
-
-    idx = st.session_state.fila_seleccionada_idx
-
-    modal_editar(
-        idx,
-        df.iloc[idx]
-    )
-
-if (
-    st.session_state.modal_eliminar_abierto
-    and st.session_state.fila_seleccionada_idx is not None
-):
-
-    idx = st.session_state.fila_seleccionada_idx
-
-    modal_eliminar(
-        idx,
-        df.iloc[idx]["Nombre"]
-    )
+        st.write("---")
+        st.write(f"### Fichas de identidad del personal ({len(res)} resultados)")
+        for indice, fila in res.iterrows():
+            indice_original = df[df['ID'] == fila['ID']].index[0]
+            
+            with st.container():
+                st.markdown(f'<div class="contact-card"><div style="display: flex; justify-content: space-between; align-items: center; width: 100%;"><div class="card-name">{fila["Nombre"]} <span style="color:#94A3B8; font-size:0.85rem; font-weight:400;">({fila["ID"]})</span></div><div><span class="badge-lyncott">{fila["Segmento"]}</span></div></div><div class="contact-card-body" style="margin-top: 5px;"><div class="card-puesto">Puesto: {fila["Puesto"]}</div><div class="card-meta">Correo: {fila["Email"]} | Centro: {fila["Centro"]} | Dirección: {fila["Direccion"]}</div></div></div>', unsafe_allow_html=True)
+                
+                c_b1, c_b2, c_spacer = st.columns([1, 1, 4.5])
+                with c_b1:
+                    st.markdown('<div class="wrapper-btn-editar" style="margin-top: -25px; margin-left: 20px; margin-bottom: 25px;">', unsafe_allow_html=True)
+                    if st.button("Editar", key=f"btn_edit_{fila['ID']}", use_container_width=True):
+                        st.session_state.fila_seleccionada_idx = int(indice_original)
+                        st.session_state.modal_editar_abierto = True
+                        st.rerun()
+                    st.markdown('</div>', unsafe_allow_html=True)
+                with c_b2:
+                    st.markdown('<div class="wrapper-btn-borrar" style="margin-top: -25px; margin-left: 10px; margin-bottom: 25px;">', unsafe_allow_html=True)
+                    if st.button("Borrar", key=f"btn_del_{fila['ID']}", use_container_width=True):
+                        st.session_state.fila_seleccionada_idx = int(indice_original)
+                        st.session_state.modal_eliminar_abierto = True
+                        st.rerun()
+                    st.markdown('</div>', unsafe_allow_html=True)
