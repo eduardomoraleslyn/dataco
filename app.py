@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 import os
 import time
-```python
+
 import gspread
 
 from oauth2client.service_account import ServiceAccountCredentials
@@ -302,7 +302,7 @@ a[href^="#"] {
 </style>
 """, unsafe_allow_html=True)
 
-```python
+
 # =========================================================
 # HELPERS
 # =========================================================
