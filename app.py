@@ -134,7 +134,7 @@ if st.session_state.mostrar_eliminado: modal_eliminado_exitoso()
 if not os.path.exists(archivo_csv):
     pd.DataFrame(columns=["ID", "Nombre", "Email", "Centro", "Puesto", "Segmento", "Genero", "Direccion", "Ingreso"]).to_csv(archivo_csv, index=False)
 
-df_crudo = pd.read_csv(archivo_csv, on_bad_lines='skip', encoding='latin1')
+df_crudo = pd.read_csv(archivo_csv, on_bad_lines='skip', encoding='utf-8-sig')
 df = df_crudo.iloc[:, :9].copy()
 df.columns = ["ID", "Nombre", "Email", "Centro", "Puesto", "Segmento", "Genero", "Direccion", "Ingreso"]
 
