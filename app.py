@@ -854,10 +854,25 @@ with c1:
 
 with c2:
 
-    st.markdown(
-        f'<a href="mailto:?bcc={correos}" target="_blank"><button class="btn-difusion-premium">Abrir en Outlook ({len(res)})</button></a>',
-        unsafe_allow_html=True
-    )
+    if st.button(
+        f"📋 Copiar correos ({len(res)})",
+        use_container_width=True
+    ):
+
+        correos_unicos = (
+            res["Email"]
+            .dropna()
+            .astype(str)
+            .unique()
+        )
+
+        correos_texto = "; ".join(correos_unicos)
+
+        st.code(correos_texto)
+
+        st.success(
+            "Correos listos para copiar ✨"
+        )
 
 # =========================================================
 # CARDS
