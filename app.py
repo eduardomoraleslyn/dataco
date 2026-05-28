@@ -91,7 +91,7 @@ def modal_nuevo_contacto():
     n_gen,
     n_dir,
     n_ing.strftime("%d/%m/%Y")
-]], columns=COLUMNAS), n_nom, n_cor, n_cen, n_pue, n_seg, n_gen, n_dir, n_ing.strftime("%d/%m/%Y")]])
+]], columns=COLUMNAS)
                 nueva_fila.to_csv(archivo_csv, mode='a', header=not os.path.exists(archivo_csv), index=False, quoting=csv.QUOTE_ALL, encoding='latin1')
                 time.sleep(0.4)
                 st.session_state.mostrar_confirmacion = True
