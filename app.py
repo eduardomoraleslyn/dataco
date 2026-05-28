@@ -854,9 +854,126 @@ else:
 
 st.write("---")
 
-st.write(
-    f"### Fichas de identidad del personal ({len(res)} resultados)"
+import io
+import base64
+import json
+import streamlit.components.v1 as components
+
+excel_buffer = io.BytesIO()
+res.to_excel(excel_buffer, index=False, engine="openpyxl")
+excel_b64 = base64.b64encode(excel_buffer.getvalue()).decode()
+
+correos_unicos = (
+    res["Email"]
+    .dropna()
+    .astype(str)
+    .unique()
 )
+
+correos_texto = "; ".join(correos_unicos)
+correos_js = json.dumps(correos_texto)
+
+col_titulo_cards, col_botones_cards = st.columns([4, 2])
+
+with col_titulo_cards:
+    st.write(
+        f"### Fichas de identidad del personal ({len(res)} resultados)"
+    )
+
+with col_botones_cards:
+
+    components.html(
+        f"""
+        <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@300;400;500&display=swap" rel="stylesheet">
+
+        <div style="
+            display:flex;
+            justify-content:flex-end;
+            gap:10px;
+            width:100%;
+            font-family:'Google Sans Flex', sans-serif;
+        ">
+
+            <a
+                href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{excel_b64}"
+                download="Base de datos filtrada.xlsx"
+                onclick="
+                    const aviso = document.getElementById('msg-exportar');
+                    aviso.style.opacity = '1';
+                    setTimeout(() => {{
+                        aviso.style.opacity = '0';
+                    }}, 2000);
+                "
+                style="text-decoration:none; flex:1;"
+            >
+                <button style="
+                    width:100%;
+                    height:38px;
+                    background:#00AAE9;
+                    color:white;
+                    border:none;
+                    border-radius:10px;
+                    font-family:'Google Sans Flex', sans-serif;
+                    font-weight:300;
+                    font-size:14px;
+                    cursor:pointer;
+                ">
+                    Exportar base de datos
+                </button>
+            </a>
+
+            <button
+                onclick="
+                    navigator.clipboard.writeText({correos_js});
+                    const aviso = document.getElementById('msg-copiar');
+                    aviso.style.opacity = '1';
+                    setTimeout(() => {{
+                        aviso.style.opacity = '0';
+                    }}, 2000);
+                "
+                style="
+                    flex:1;
+                    height:38px;
+                    background:#ED1C24;
+                    color:white;
+                    border:none;
+                    border-radius:10px;
+                    font-family:'Google Sans Flex', sans-serif;
+                    font-weight:300;
+                    font-size:14px;
+                    cursor:pointer;
+                "
+            >
+                Copiar correos
+            </button>
+        </div>
+
+        <div id="msg-exportar" style="
+            opacity:0;
+            margin-top:8px;
+            text-align:center;
+            color:#0369A1;
+            font-size:13px;
+            font-weight:400;
+            transition:opacity 0.2s ease;
+        ">
+            Base de datos descargada
+        </div>
+
+        <div id="msg-copiar" style="
+            opacity:0;
+            margin-top:-18px;
+            text-align:center;
+            color:#991B1B;
+            font-size:13px;
+            font-weight:400;
+            transition:opacity 0.2s ease;
+        ">
+            ¡Ya puedes pegar tus contactos!
+        </div>
+        """,
+        height=72
+    )
 
 for indice, fila in res.iterrows():
 
