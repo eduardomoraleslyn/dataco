@@ -524,7 +524,7 @@ def modal_editar_contacto(indice_fila, datos_actuales):
             st.session_state.modal_editar_abierto = False
 
             st.rerun()
-@st.dialog("Confirmar eliminación")
+@st.dialog("Eliminar contacto")
 def modal_eliminar_contacto(indice_fila, nombre_colaborador):
 
     st.write("¿Estás seguro de borrar este contacto?")
