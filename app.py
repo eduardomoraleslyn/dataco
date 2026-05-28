@@ -590,7 +590,8 @@ if st.session_state.mostrar_confirmacion:
     modal_confirmacion()
 
 if st.session_state.mostrar_eliminado:
-    modal_eliminado_exitoso()
+    st.toast("Contacto eliminado correctamente.")
+    st.session_state.mostrar_eliminado = False
 
 if (
     st.session_state.modal_editar_abierto
