@@ -707,7 +707,10 @@ for indice, fila in res.iterrows():
     with st.container():
 
         st.markdown(f"""
-        <div class="contact-card">
+<div class="contact-card">
+...
+</div>
+""", unsafe_allow_html=True)
 
             <div style="
                 display:flex;
