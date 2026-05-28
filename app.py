@@ -951,31 +951,29 @@ with col_botones_cards:
             </button>
         </div>
 
-        <div id="msg-exportar" style="
-    opacity:0;
+        <div style="
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    width:100%;
     margin-top:8px;
-    text-align:center;
-    color:#78B956;
     font-family:'Google Sans Flex', sans-serif;
-    font-size:13px;
-    font-weight:600;
-    transition:opacity 0.2s ease;
 ">
-    Base de datos descargada
-</div>
 
-<div id="msg-copiar" style="
-    opacity:0;
-    margin-top:8px;
-    text-align:center;
-    color:#78B956;
-    font-family:'Google Sans Flex', sans-serif;
-    font-size:13px;
-    font-weight:600;
-    transition:opacity 0.2s ease;
-">
-    ¡Ya puedes pegar tus contactos!
-</div>
+    <div
+        id="msg-exportar"
+        style="
+            flex:1;
+            opacity:0;
+            text-align:center;
+            color:#78B956;
+            font-size:13px;
+            font-weight:600;
+            transition:opacity 0.2s ease;
+        "
+    >
+        Base de datos descargada
+    </
         """,
         height=110
     )
