@@ -29,8 +29,8 @@ st.markdown("""
     .metric-value-custom { font-weight: 700 !important; font-size: 1.6rem !important; color: #0F172A !important; line-height: 1; }
     .contact-card { background-color: white; padding: 1.5rem; border-radius: 12px; border-left: 5px solid #1E40AF; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 15px; }
     .card-name { color: #1E3A8A; font-size: 1.2rem; font-weight: 700; letter-spacing: -0.5px; }
-    .card-puesto { color: #475569; font-weight: 600; font-size: 0.95rem; margin-bottom: 0.5rem; }
-    .card-meta { color: #64748B; font-size: 0.85rem; margin-bottom: 12px; }
+    .card-puesto { color: #475569; font-weight: 600; font-size: 0.95rem; margin-bottom: 0.2rem; }
+    .card-meta { color: #64748B; font-size: 0.85rem; display: inline-block; margin-top: 3px; }
     div[data-testid="InputInstructions"] { display: none !important; }
     
     div[data-testid="stDownloadButton"] button {
@@ -40,9 +40,9 @@ st.markdown("""
     button[kind="primary"] { background-color: #ed1c24 !important; color: white !important; border: none !important; border-radius: 6px !important; height: 42px !important; font-size: 15px !important; font-weight: 700 !important; width: 100% !important; margin-top: 15px !important; }
     .badge-lyncott { background-color: #EFF6FF !important; color: #1E40AF !important; padding: 3px 12px !important; border-radius: 20px !important; font-weight: 600 !important; font-size: 0.8rem !important; line-height: 1.2 !important; display: inline-block !important; margin-right: 6px !important; }
     
-    .wrapper-btn-editar button { background-color: #FFDE21 !important; color: #333333 !important; border-radius: 6px !important; font-weight: 600 !important; font-size: 0.85rem !important; border: none !important; height: 32px !important; width: 100% !important; box-shadow: none !important; }
+    .wrapper-btn-editar button { background-color: #FFDE21 !important; color: #333333 !important; border-radius: 4px !important; font-weight: 600 !important; font-size: 0.75rem !important; border: none !important; height: 24px !important; width: 100% !important; box-shadow: none !important; line-height: 1 !important; padding: 0px !important; }
     .wrapper-btn-editar button:hover { background-color: #e0c21b !important; }
-    .wrapper-btn-borrar button { background-color: #ed1c24 !important; color: white !important; border-radius: 6px !important; font-weight: 600 !important; font-size: 0.85rem !important; border: none !important; height: 32px !important; width: 100% !important; box-shadow: none !important; }
+    .wrapper-btn-borrar button { background-color: #ed1c24 !important; color: white !important; border-radius: 4px !important; font-weight: 600 !important; font-size: 0.75rem !important; border: none !important; height: 24px !important; width: 100% !important; box-shadow: none !important; line-height: 1 !important; padding: 0px !important; }
     .wrapper-btn-borrar button:hover { background-color: #c8131d !important; }
     
     .btn-difusion-premium { width: 100% !important; height: 38px !important; background-color: #898989 !important; color: #3c3c3c !important; border: none !important; border-radius: 6px !important; font-weight: 600 !important; font-size: 14px !important; cursor: pointer !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; text-decoration: none !important; }
@@ -244,23 +244,27 @@ else:
         for indice, fila in res.iterrows():
             indice_original = df[df['ID'] == fila['ID']].index[0]
             
-            # Encapsulamos todo en un único contenedor con bordes para armar la tarjeta blanca limpia
             with st.container():
-                st.markdown(f'<div class="contact-card"><div style="display: flex; justify-content: space-between; align-items: center; width: 100%;"><div class="card-name">{fila["Nombre"]} <span style="color:#94A3B8; font-size:0.85rem; font-weight:400;">({fila["ID"]})</span></div><div><span class="badge-lyncott">{fila["Segmento"]}</span></div></div><div class="contact-card-body" style="margin-top: 5px;"><div class="card-puesto">Puesto: {fila["Puesto"]}</div><div class="card-meta">Correo: {fila["Email"]} | Centro: {fila["Centro"]} | Dirección: {fila["Direccion"]}</div></div></div>', unsafe_allow_html=True)
+                # Dibujamos la tarjeta blanca institucional
+                st.markdown(f'<div class="contact-card" style="margin-bottom: 0px; border-radius: 12px 12px 0px 0px;"><div style="display: flex; justify-content: space-between; align-items: center; width: 100%;"><div class="card-name">{fila["Nombre"]} <span style="color:#94A3B8; font-size:0.85rem; font-weight:400;">({fila["ID"]})</span></div><div><span class="badge-lyncott">{fila["Segmento"]}</span></div></div><div class="contact-card-body" style="margin-top: 5px;"><div class="card-puesto">Puesto: {fila["Puesto"]}</div></div></div>', unsafe_allow_html=True)
                 
-                # Desplegamos los botones en columnas simétricas exactamente abajo de la dirección y dentro del espacio blanco
-                c_b1, c_b2, c_spacer = st.columns([1, 1, 4.5])
+                # Sistema divisional interno para fusionar la info y los botones micro en la misma línea
+                st.markdown('<div style="background-color: white; padding: 0rem 1.5rem 1.2rem 1.5rem; border-radius: 0px 0px 12px 12px; border-left: 5px solid #1E40AF; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 15px;">', unsafe_allow_html=True)
+                c_txt, c_b1, c_b2, c_spacer = st.columns([6, 1, 1, 0.5])
+                with c_txt:
+                    st.markdown(f'<div class="card-meta">Correo: {fila["Email"]} | Centro: {fila["Centro"]} | Dirección: {fila["Direccion"]}</div>', unsafe_allow_html=True)
                 with c_b1:
-                    st.markdown('<div class="wrapper-btn-editar" style="margin-top: -25px; margin-left: 20px; margin-bottom: 25px;">', unsafe_allow_html=True)
-                    if st.button("✏️ Editar", key=f"btn_edit_{fila['ID']}", use_container_width=True):
+                    st.markdown('<div class="wrapper-btn-editar">', unsafe_allow_html=True)
+                    if st.button("Editar", key=f"btn_edit_{fila['ID']}", use_container_width=True):
                         st.session_state.fila_seleccionada_idx = int(indice_original)
                         st.session_state.modal_editar_abierto = True
                         st.rerun()
                     st.markdown('</div>', unsafe_allow_html=True)
                 with c_b2:
-                    st.markdown('<div class="wrapper-btn-borrar" style="margin-top: -25px; margin-left: 10px; margin-bottom: 25px;">', unsafe_allow_html=True)
-                    if st.button("🗑️ Borrar", key=f"btn_del_{fila['ID']}", use_container_width=True):
+                    st.markdown('<div class="wrapper-btn-borrar">', unsafe_allow_html=True)
+                    if st.button("Borrar", key=f"btn_del_{fila['ID']}", use_container_width=True):
                         st.session_state.fila_seleccionada_idx = int(indice_original)
                         st.session_state.modal_eliminar_abierto = True
                         st.rerun()
                     st.markdown('</div>', unsafe_allow_html=True)
+                st.markdown('</div>', unsafe_allow_html=True)
