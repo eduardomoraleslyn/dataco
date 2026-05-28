@@ -51,6 +51,17 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 archivo_csv = "Base de datos.csv"
+COLUMNAS = [
+    "ID",
+    "Nombre",
+    "Email",
+    "Centro",
+    "Puesto",
+    "Segmento",
+    "Genero",
+    "Direccion",
+    "Ingreso"
+]
 def guardar_dataframe(dataframe):
     dataframe.to_csv(archivo_csv, index=False, quoting=csv.QUOTE_ALL, encoding='utf-8-sig')
 
@@ -70,7 +81,17 @@ def modal_nuevo_contacto():
         n_ing = st.date_input("Fecha de ingreso")
         if st.form_submit_button("Guardar contacto"):
             if n_nom and n_cor:
-                nueva_fila = pd.DataFrame([[n_id, n_nom, n_cor, n_cen, n_pue, n_seg, n_gen, n_dir, n_ing.strftime("%d/%m/%Y")]])
+               nueva_fila = pd.DataFrame([[
+    n_id,
+    n_nom,
+    n_cor,
+    n_cen,
+    n_pue,
+    n_seg,
+    n_gen,
+    n_dir,
+    n_ing.strftime("%d/%m/%Y")
+]], columns=COLUMNAS), n_nom, n_cor, n_cen, n_pue, n_seg, n_gen, n_dir, n_ing.strftime("%d/%m/%Y")]])
                 nueva_fila.to_csv(archivo_csv, mode='a', header=not os.path.exists(archivo_csv), index=False, quoting=csv.QUOTE_ALL, encoding='latin1')
                 time.sleep(0.4)
                 st.session_state.mostrar_confirmacion = True
@@ -100,7 +121,7 @@ def modal_editar_contacto(indice_fila, datos_actuales):
             df_global = pd.read_csv(archivo_csv, on_bad_lines='skip', encoding='latin1')
             # SOLUCIÓN: Forzamos a recortar a las primeras 9 columnas antes de inyectar los nuevos datos editados
             df_global = df_global.iloc[:, :9]
-            df_global.columns = ["ID", "Nombre", "Email", "Centro", "Puesto", "Segmento", "Genero", "Direccion", "Ingreso"]
+            df_global.columns = COLUMNAS
             df_global.loc[indice_fila] = [ed_id, ed_nom, ed_cor, ed_cen, ed_pue, ed_seg, ed_gen, ed_dir, str(datos_actuales.iloc[8])]
             guardar_dataframe(df_global)
             st.session_state.modal_editar_abierto = False
@@ -135,13 +156,26 @@ if st.session_state.mostrar_confirmacion: modal_confirmacion()
 if st.session_state.mostrar_eliminado: modal_eliminado_exitoso()
 
 if not os.path.exists(archivo_csv):
-    pd.DataFrame(columns=["ID", "Nombre", "Email", "Centro", "Puesto", "Segmento", "Genero", "Direccion", "Ingreso"]).to_csv(archivo_csv, index=False, encoding='latin1')
+    pd.DataFrame(columns=COLUMNAS)
 
-df_crudo = pd.read_csv(archivo_csv, on_bad_lines='skip', encoding='latin1')
-for col in df_crudo.select_dtypes(include=['object']).columns:
-    df_crudo[col] = df_crudo[col].astype(str).str.encode('latin1', errors='ignore').str.decode('utf-8', errors='ignore')
-df = df_crudo.iloc[:, :9].copy()
-df.columns = ["ID", "Nombre", "Email", "Centro", "Puesto", "Segmento", "Genero", "Direccion", "Ingreso"]
+try:
+    df = pd.read_csv(
+        archivo_csv,
+        encoding='utf-8-sig',
+        on_bad_lines='skip'
+    )
+
+    df = df.iloc[:, :9]
+
+    if len(df.columns) != 9:
+        st.error("El archivo CSV no tiene el formato correcto.")
+        st.stop()
+
+    df.columns = COLUMNAS
+
+except Exception as e:
+    st.error(f"Error al cargar CSV: {e}")
+    st.stop()
 
 if st.session_state.modal_editar_abierto and st.session_state.fila_seleccionada_idx is not None:
     idx = st.session_state.fila_seleccionada_idx
