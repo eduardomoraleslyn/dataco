@@ -836,14 +836,14 @@ for indice, fila in res.iterrows():
             </div>
 
             <div class="contact-row-puesto">
-                Puesto: {fila["Puesto"]}
-            </div>
+    {fila["Puesto"]}
+</div>
 
-            <div class="contact-row-meta">
-                Correo: {fila["Email"]} |
-                Centro: {fila["Centro"]} |
-                Dirección: {fila["Direccion"]}
-            </div>
+<div class="contact-row-meta">
+    {fila["Email"]} ·
+    {fila["Centro"]} ·
+    {fila["Direccion"]}
+</div>
             ''',
             unsafe_allow_html=True
         )
