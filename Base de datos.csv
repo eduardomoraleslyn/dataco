@@ -1,3 +1,16 @@
 ID,Nombre,Email,Centro,Puesto,Segmento,Genero,Direccion,Ingreso
-101,Jonathan Morales,jonathan@lyncott.com,Querétaro,Coordinador,Corporativo y Planta,Masculino,Dirección de HR,27/05/2026
-102,Bibi Morales,bibi@lyncott.com,Sucursal Qro,Ejecutivo,Sucursal,Femenino,Dirección Comercial,15/03/2024
+1001,Jonathan Eduardo Morales Amador,jonathan.morales@lyncott.mx,Corporativo Qro,Head of Organizational Communication,Corporativo y Planta,Masculino,Dirección de Recursos Humanos,05/05/2019
+1002,Alejandro Gómez Mendoza,alejandro.gomez@lyncott.mx,Planta Querétaro,Supervisor de Producción,Corporativo y Planta,Masculino,Dirección de Operaciones,12/08/2020
+1003,Beatriz Adriana Solís,beatriz.solis@lyncott.mx,Sucursal CDMX,Gerente de Ventas,Sucursal,Femenino,Dirección Comercial,22/01/2021
+1004,Carlos Eduardo Martínez,carlos.martinez@lyncott.mx,Planta Querétaro,Coordinador de Logística,Corporativo y Planta,Masculino,Dirección de Operaciones,15/11/2022
+1005,Diana Laura Fuentes,diana.fuentes@lyncott.mx,Sucursal Monterrey,Ejecutivo de Cuenta,Sucursal,Femenino,Dirección Comercial,04/03/2023
+1006,Eduardo Javier Ruiz,eduardo.ruiz@lyncott.mx,Corporativo Qro,Analista de TI,Corporativo y Planta,Masculino,Dirección de Finanzas,19/07/2021
+1007,Fabiola Gutiérrez Luna,fabiola.gutierrez@lyncott.mx,Sucursal Guadalajara,Gerente Administrativo,Sucursal,Femenino,Dirección Comercial,02/02/2018
+1008,Gustavo Alberto Pérez,gustavo.perez@lyncott.mx,Planta Querétaro,Técnico de Mantenimiento,Corporativo y Planta,Masculino,Dirección de Operaciones,30/10/2023
+1009,Irina Sofia Delgado,irina.delgado@lyncott.mx,Corporativo Qro,Especialista de Atracción de Talento,Corporativo y Planta,Femenino,Dirección de Recursos Humanos,11/04/2022
+1010,Héctor Manuel Ortiz,hector.ortiz@lyncott.mx,Sucursal Cancún,Coordinador de Distribución,Sucursal,Masculino,Dirección Comercial,08/09/2024
+1011,Valeria Zúñiga,valeria.zuniga@lyncott.mx,Corporativo Qro,Productor Audiovisual,Corporativo y Planta,Femenino,Dirección de Recursos Humanos,20/06/2024
+1012,Ricardo Anaya Torres,ricardo.anaya@lyncott.mx,Sucursal Puebla,Ejecutivo de Ventas,Sucursal,Masculino,Dirección Comercial,15/01/2023
+1013,Mónica Leticia Herrera,monica.herrera@lyncott.mx,Planta Querétaro,Analista de Calidad,Corporativo y Planta,Femenino,Dirección de Operaciones,18/05/2021
+1014,Arturo Castro Peña,arturo.castro@lyncott.mx,Corporativo Qro,Contador Senior,Corporativo y Planta,Masculino,Dirección de Finanzas,01/12/2019
+1015,Gabriela Elena Medina,gabriela.medina@lyncott.mx,Sucursal Mérida,Coordinador Regional,Sucursal,Femenino,Dirección Comercial,14/07/2022
