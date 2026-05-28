@@ -736,7 +736,7 @@ for indice, fila in res.iterrows():
 
             if st.button(
                 "Borrar",
-                key=f"del_{indice}",
+                key=f"del_{fila['ID']}",
                 use_container_width=True
             ):
 
@@ -748,7 +748,7 @@ for indice, fila in res.iterrows():
 
             if st.button(
                 "Borrar",
-                key=f"del_{indice}",
+                key=f"del_{fila['ID']}",
                 use_container_width=True
             ):
 
@@ -772,7 +772,7 @@ for indice, fila in res.iterrows():
 
             if st.button(
                 "Borrar",
-                key=f"del_{indice}",
+                key=f"del_{fila['ID']}",
                 use_container_width=True
             ):
 
@@ -822,7 +822,7 @@ for indice, fila in res.iterrows():
 
             if st.button(
                 "Borrar",
-                key=f"del_{indice}",
+                key=f"del_{fila['ID']}",
                 use_container_width=True
             ):
 
@@ -869,7 +869,7 @@ for indice, fila in res.iterrows():
 
             if st.button(
                 "Borrar",
-                key=f"del_{indice}",
+                key=f"del_{fila['ID']}",
                 use_container_width=True
             ):
 
