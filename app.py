@@ -894,7 +894,6 @@ for indice, fila in res.iterrows():
         '</div>',
         unsafe_allow_html=True
     )
-```
 
 
             with col_edit:
