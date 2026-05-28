@@ -244,22 +244,20 @@ else:
         for indice, fila in res.iterrows():
             indice_original = df[df['ID'] == fila['ID']].index[0]
             
-            # Encapsulamos todo en un único contenedor con bordes para armar la tarjeta blanca limpia
             with st.container():
                 st.markdown(f'<div class="contact-card"><div style="display: flex; justify-content: space-between; align-items: center; width: 100%;"><div class="card-name">{fila["Nombre"]} <span style="color:#94A3B8; font-size:0.85rem; font-weight:400;">({fila["ID"]})</span></div><div><span class="badge-lyncott">{fila["Segmento"]}</span></div></div><div class="contact-card-body" style="margin-top: 5px;"><div class="card-puesto">Puesto: {fila["Puesto"]}</div><div class="card-meta">Correo: {fila["Email"]} | Centro: {fila["Centro"]} | Dirección: {fila["Direccion"]}</div></div></div>', unsafe_allow_html=True)
                 
-                # Desplegamos los botones en columnas simétricas exactamente abajo de la dirección y dentro del espacio blanco
                 c_b1, c_b2, c_spacer = st.columns([1, 1, 4.5])
                 with c_b1:
                     st.markdown('<div class="wrapper-btn-editar" style="margin-top: -25px; margin-left: 20px; margin-bottom: 25px;">', unsafe_allow_html=True)
-                    if st.button("✏️ Editar", key=f"btn_edit_{fila['ID']}", use_container_width=True):
+                    if st.button("Editar", key=f"btn_edit_{fila['ID']}", use_container_width=True):
                         st.session_state.fila_seleccionada_idx = int(indice_original)
                         st.session_state.modal_editar_abierto = True
                         st.rerun()
                     st.markdown('</div>', unsafe_allow_html=True)
                 with c_b2:
                     st.markdown('<div class="wrapper-btn-borrar" style="margin-top: -25px; margin-left: 10px; margin-bottom: 25px;">', unsafe_allow_html=True)
-                    if st.button("🗑️ Borrar", key=f"btn_del_{fila['ID']}", use_container_width=True):
+                    if st.button("Borrar", key=f"btn_del_{fila['ID']}", use_container_width=True):
                         st.session_state.fila_seleccionada_idx = int(indice_original)
                         st.session_state.modal_eliminar_abierto = True
                         st.rerun()
