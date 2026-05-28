@@ -69,49 +69,64 @@ def guardar_dataframe(dataframe):
 def modal_nuevo_contacto():
     st.write("Ingresa los datos para actualizar la base corporativa.")
     with st.form("form_alta"):
-        c1, c2 = st.columns(2)
-        n_id = c1.text_input("ID empleado")
-        n_nom = c2.text_input("Nombre completo")
-        n_cor = c1.text_input("Correo electrónico")
-        n_cen = c2.text_input("Centro de trabajo")
-        n_pue = c1.text_input("Puesto")
-        n_seg = c2.selectbox("Segmento", ["Corporativo y Planta", "Sucursal", "Otro"])
-        n_gen = c1.selectbox("Género", ["Masculino", "Femenino", "No especificado"])
-        n_dir = c2.text_input("Dirección general")
-        n_ing = st.date_input("Fecha de ingreso")
-                if st.form_submit_button("Guardar contacto"):
 
-            if n_nom and n_cor:
+    c1, c2 = st.columns(2)
 
-                nueva_fila = pd.DataFrame([[
-                    n_id,
-                    n_nom,
-                    n_cor,
-                    n_cen,
-                    n_pue,
-                    n_seg,
-                    n_gen,
-                    n_dir,
-                    n_ing.strftime("%d/%m/%Y")
-                ]], columns=COLUMNAS)
+    n_id = c1.text_input("ID empleado")
+    n_nom = c2.text_input("Nombre completo")
 
-                nueva_fila.to_csv(
-                    archivo_csv,
-                    mode='a',
-                    header=not os.path.exists(archivo_csv),
-                    index=False,
-                    quoting=csv.QUOTE_ALL,
-                    encoding='utf-8-sig'
-                )
+    n_cor = c1.text_input("Correo electrónico")
+    n_cen = c2.text_input("Centro de trabajo")
 
-                time.sleep(0.4)
+    n_pue = c1.text_input("Puesto")
 
-                st.session_state.mostrar_confirmacion = True
+    n_seg = c2.selectbox(
+        "Segmento",
+        ["Corporativo y Planta", "Sucursal", "Otro"]
+    )
 
-                st.rerun()
+    n_gen = c1.selectbox(
+        "Género",
+        ["Masculino", "Femenino", "No especificado"]
+    )
 
-            else:
-                st.error("El nombre y el correo son campos obligatorios.")
+    n_dir = c2.text_input("Dirección general")
+
+    n_ing = st.date_input("Fecha de ingreso")
+
+    if st.form_submit_button("Guardar contacto"):
+
+        if n_nom and n_cor:
+
+            nueva_fila = pd.DataFrame([[
+                n_id,
+                n_nom,
+                n_cor,
+                n_cen,
+                n_pue,
+                n_seg,
+                n_gen,
+                n_dir,
+                n_ing.strftime("%d/%m/%Y")
+            ]], columns=COLUMNAS)
+
+            nueva_fila.to_csv(
+                archivo_csv,
+                mode='a',
+                header=not os.path.exists(archivo_csv),
+                index=False,
+                quoting=csv.QUOTE_ALL,
+                encoding='utf-8-sig'
+            )
+
+            time.sleep(0.4)
+
+            st.session_state.mostrar_confirmacion = True
+
+            st.rerun()
+
+        else:
+            st.error("El nombre y el correo son campos obligatorios.")
     if n_nom and n_cor:
 
         nueva_fila = pd.DataFrame([[
