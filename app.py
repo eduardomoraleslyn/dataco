@@ -12,6 +12,7 @@ from gspread_dataframe import get_as_dataframe, set_with_dataframe
 ```
 
 
+```python
 # =========================================================
 # CONFIG
 # =========================================================
@@ -22,10 +23,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-```python
-SHEET_ID = "1oGAqK9mz2CuOKDrUjfppQ6nFtjuBVxnJ5tbMv5y2_f4"
-```
-
+SHEET_ID = "AQUI_PEGA_EL_ID_DE_TU_SHEET"
 
 COLUMNAS = [
     "ID",
@@ -311,14 +309,7 @@ a[href^="#"] {
 # =========================================================
 
 
-def cargar_datos():
 
-    crear_excel()
-
-    df = pd.read_excel(
-        archivo_excel,
-        engine='openpyxl'
-    )
 
     # LIMPIAR ESPACIOS
     df.columns = df.columns.str.strip()
