@@ -285,6 +285,10 @@ div[data-testid="stDialog"] button[kind="primary"] {
     font-size: 0.85rem;
     margin-top: 4px;
 }
+a[href^="#"] {
+    display: none !important;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
