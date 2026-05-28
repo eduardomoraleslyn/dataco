@@ -79,8 +79,39 @@ def modal_nuevo_contacto():
         n_gen = c1.selectbox("Género", ["Masculino", "Femenino", "No especificado"])
         n_dir = c2.text_input("Dirección general")
         n_ing = st.date_input("Fecha de ingreso")
-        if st.form_submit_button("Guardar contacto"):
+                if st.form_submit_button("Guardar contacto"):
 
+            if n_nom and n_cor:
+
+                nueva_fila = pd.DataFrame([[
+                    n_id,
+                    n_nom,
+                    n_cor,
+                    n_cen,
+                    n_pue,
+                    n_seg,
+                    n_gen,
+                    n_dir,
+                    n_ing.strftime("%d/%m/%Y")
+                ]], columns=COLUMNAS)
+
+                nueva_fila.to_csv(
+                    archivo_csv,
+                    mode='a',
+                    header=not os.path.exists(archivo_csv),
+                    index=False,
+                    quoting=csv.QUOTE_ALL,
+                    encoding='utf-8-sig'
+                )
+
+                time.sleep(0.4)
+
+                st.session_state.mostrar_confirmacion = True
+
+                st.rerun()
+
+            else:
+                st.error("El nombre y el correo son campos obligatorios.")
     if n_nom and n_cor:
 
         nueva_fila = pd.DataFrame([[
