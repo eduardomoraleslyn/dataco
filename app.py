@@ -829,7 +829,6 @@ st.write(
     f"### Fichas de identidad del personal ({len(res)} resultados)"
 )
 
-```python
 for indice, fila in res.iterrows():
 
     st.markdown(
