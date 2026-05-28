@@ -114,7 +114,7 @@ def modal_nuevo_contacto():
                 n_ing.strftime("%d/%m/%Y")
             ]], columns=COLUMNAS)
 
-            nueva_fila.to_csv(
+            nueva_fila.to_excel(
                 archivo_csv,
                 mode='a',
                 header=not os.path.exists(archivo_csv),
@@ -145,7 +145,7 @@ def modal_nuevo_contacto():
             n_ing.strftime("%d/%m/%Y")
         ]], columns=COLUMNAS)
 
-        nueva_fila.to_csv(
+        nueva_fila.to_excel(
             archivo_csv,
             mode='a',
             header=not os.path.exists(archivo_csv),
@@ -174,7 +174,7 @@ def modal_nuevo_contacto():
     n_dir,
     n_ing.strftime("%d/%m/%Y")
 ]], columns=COLUMNAS)
-                nueva_fila.to_csv(archivo_csv, mode='a', header=not os.path.exists(archivo_csv), index=False, quoting=csv.QUOTE_ALL, encoding='latin1')
+                nueva_fila.to_excel(archivo_csv, mode='a', header=not os.path.exists(archivo_csv), index=False, quoting=csv.QUOTE_ALL, encoding='latin1')
                 time.sleep(0.4)
                 st.session_state.mostrar_confirmacion = True
                 st.rerun()
@@ -354,7 +354,7 @@ else:
         st.write("### Herramientas de difusión directa")
         correos = "; ".join(res.iloc[:, 2].dropna().astype(str).tolist())
         c1, c2, c3 = st.columns(3)
-        with c1: st.download_button("Exportar base (CSV)", res.to_csv(index=False), "base.csv", use_container_width=True)
+        with c1: st.download_button("Exportar base (CSV)", res.to_excel(index=False), "base.csv", use_container_width=True)
         with c2: st.markdown(f'<a href="mailto:?bcc={correos}" target="_blank" style="text-decoration:none;"><button class="btn-difusion-premium">Abrir en Outlook ({len(res)})</button></a>', unsafe_allow_html=True)
         with c3:
             html_copiado_seguro = f'<textarea id="emails-box-{len(res)}" class="hidden-copy-area">{correos}</textarea><button id="btn-copy-master" class="btn-difusion-premium" onclick="var t=document.getElementById(\'emails-box-{len(res)}\'); t.select(); t.setSelectionRange(0,99999); document.execCommand(\'copy\'); this.innerText=\'Contactos copiados!\'; this.style.backgroundColor=\'#10B981\'; this.style.color=\'white\';">Copiar al portapapeles</button>'
