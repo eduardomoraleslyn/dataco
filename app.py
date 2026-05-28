@@ -362,7 +362,11 @@ def modal_nuevo_contacto():
 
         n_ing = st.date_input("Fecha de ingreso")
 
-        if st.form_submit_button("Guardar contacto"):
+        if st.form_submit_button(
+    "Guardar contacto",
+    type="primary",
+    use_container_width=True
+):
 
             if n_nom and n_cor:
 
