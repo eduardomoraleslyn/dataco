@@ -52,6 +52,7 @@ if "fila_seleccionada_idx" not in st.session_state:
 # =========================================================
 
 st.markdown("""
+
     <div style="text-align:center; padding: 0.4rem 0 0.8rem 0;">
         <div style="font-size:2rem;">Eliminar</div>
 
