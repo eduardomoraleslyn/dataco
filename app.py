@@ -340,7 +340,7 @@ def modal_nuevo_contacto():
 
         c1, c2 = st.columns(2)
 
-        n_id = c1.text_input("ID empleado")
+        n_id = c1.text_input("ID")
         n_nom = c2.text_input("Nombre completo")
 
         n_cor = c1.text_input("Correo electrónico")
