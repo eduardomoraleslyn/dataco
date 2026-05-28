@@ -256,7 +256,7 @@ div[data-testid="stDialog"] button[kind="primary"] {
     margin-top: 8px !important;
 }
 .contact-row {
-    padding: 1rem 3rem 1rem 3rem;
+    padding: .5rem 3rem .5rem 3rem;
     border-bottom: 1px solid #E2E8F0;
 }
 
