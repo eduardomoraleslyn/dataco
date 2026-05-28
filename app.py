@@ -825,28 +825,32 @@ for indice, fila in res.iterrows():
     with col_info:
 
         st.markdown(
-            f'''
-            <div class="contact-row-name">
-                {fila["Nombre"]}
-                <span class="contact-row-id">({fila["ID"]})</span>
-            </div>
+    f'''
+    <div class="contact-row-name">
+        {fila["Nombre"]}
+        <span class="contact-row-id">
+            ({fila["ID"]})
+        </span>
+    </div>
 
-            <div style="margin-top:6px;">
-                <span class="badge-lyncott">{fila["Segmento"]}</span>
-            </div>
+    <div style="margin-top:6px;">
+        <span class="badge-lyncott">
+            {fila["Segmento"]}
+        </span>
+    </div>
 
-            <div class="contact-row-puesto">
-    {fila["Puesto"]}
-</div>
+    <div class="contact-row-puesto">
+        {fila["Puesto"]}
+    </div>
 
-<div class="contact-row-meta">
-    {fila["Email"]} ·
-    {fila["Centro"]} ·
-    {fila["Direccion"]}
-</div>
-            ''',
-            unsafe_allow_html=True
-        )
+    <div class="contact-row-meta">
+        {fila["Email"]} ·
+        {fila["Centro"]} ·
+        {fila["Direccion"]}
+    </div>
+    ''',
+    unsafe_allow_html=True
+)
 
     with col_edit:
 
