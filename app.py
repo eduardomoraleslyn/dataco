@@ -702,7 +702,6 @@ st.write(
     f"### Fichas de identidad del personal ({len(res)} resultados)"
 )
 
-
     for indice, fila in res.iterrows():
 
     with st.container():
