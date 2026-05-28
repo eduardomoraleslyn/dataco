@@ -661,7 +661,14 @@ with col_btn:
 # SEARCH
 # =========================================================
 
-st.write("---")
+st.markdown(
+    """
+    <div style='margin-top:-18px; margin-bottom:-8px;'>
+        <hr>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 entrada = st.text_input(
     "",
