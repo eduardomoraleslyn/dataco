@@ -655,7 +655,7 @@ with col_btn:
     st.session_state.modal_eliminar_abierto = False
     st.session_state.fila_seleccionada_idx = None
 
-    modal_nuevo_contacto()
+        modal_nuevo_contacto()
 
 # =========================================================
 # SEARCH
