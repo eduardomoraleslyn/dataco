@@ -706,47 +706,44 @@ for indice, fila in res.iterrows():
 
     with st.container():
 
-        st.markdown(f"""
-<div class="contact-card">
-...
-</div>
-""", unsafe_allow_html=True)
+    st.markdown(f"""
+    <div class="contact-card">
 
-            <div style="
-                display:flex;
-                justify-content:space-between;
-                align-items:center;
-            ">
+        <div style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        ">
 
-                <div class="card-name">
-                    {fila["Nombre"]}
-                    <span style="color:#94A3B8;font-size:0.85rem;">
-                        ({fila["ID"]})
-                    </span>
-                </div>
-
-                <span class="badge-lyncott">
-                    {fila["Segmento"]}
+            <div class="card-name">
+                {fila["Nombre"]}
+                <span style="color:#94A3B8;font-size:0.85rem;">
+                    ({fila["ID"]})
                 </span>
-
             </div>
 
-            <div style="margin-top:8px;">
+            <span class="badge-lyncott">
+                {fila["Segmento"]}
+            </span>
 
-                <div class="card-puesto">
-                    Puesto: {fila["Puesto"]}
-                </div>
+        </div>
 
-                <div class="card-meta">
-                    Correo: {fila["Email"]} |
-                    Centro: {fila["Centro"]} |
-                    Dirección: {fila["Direccion"]}
-                </div>
+        <div style="margin-top:8px;">
 
+            <div class="card-puesto">
+                Puesto: {fila["Puesto"]}
+            </div>
+
+            <div class="card-meta">
+                Correo: {fila["Email"]} |
+                Centro: {fila["Centro"]} |
+                Dirección: {fila["Direccion"]}
             </div>
 
         </div>
-        """, unsafe_allow_html=True)
+
+    </div>
+    """, unsafe_allow_html=True)
 
         c1, c2, _ = st.columns([1,1,4])
 
