@@ -52,7 +52,7 @@ st.markdown("""
 
 archivo_csv = "Base de datos.csv"
 def guardar_dataframe(dataframe):
-    dataframe.to_csv(archivo_csv, index=False, quoting=csv.QUOTE_ALL, encoding='latin1')
+    dataframe.to_csv(archivo_csv, index=False, quoting=csv.QUOTE_ALL, encoding='utf-8-sig')
 
 @st.dialog("Agregar nuevo colaborador")
 def modal_nuevo_contacto():
