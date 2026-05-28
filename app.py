@@ -23,7 +23,7 @@ st.set_page_config(
 )
 
 ```python
-SHEET_ID = "PEGA_AQUI_EL_ID_DE_TU_GOOGLE_SHEET"
+SHEET_ID = "1oGAqK9mz2CuOKDrUjfppQ6nFtjuBVxnJ5tbMv5y2_f4"
 ```
 
 
