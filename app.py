@@ -419,7 +419,7 @@ def modal_editar_contacto(indice_fila, datos_actuales):
         c1, c2 = st.columns(2)
 
         ed_id = c1.text_input(
-            "ID empleado",
+    "ID",
             value=str(datos_actuales["ID"])
         )
 
