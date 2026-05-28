@@ -200,7 +200,7 @@ border-radius: 8px !important;
 .btn-difusion-premium {
     width: 100% !important;
     height: 38px !important;
-    background-color: #898989 !important;
+    background-color: #3c3c3c !important;
     color: white !important;
     border: none !important;
     border-radius: 6px !important;
