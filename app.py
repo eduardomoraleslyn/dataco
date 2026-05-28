@@ -51,24 +51,22 @@ if "fila_seleccionada_idx" not in st.session_state:
 # CSS
 # =========================================================
 
-st.markdown("""
-<style>
+st.markdown(
+    """
+    <div style="text-align:center; padding: 0.4rem 0 0.8rem 0;">
+        <div style="font-size:2rem;">Eliminar</div>
 
-/* CSS */
+        <h3 style="margin-bottom:0.4rem;">
+            ¿Borrar este contacto?
+        </h3>
 
-.stDownloadButton button {
-
-    color: white !important;
-    font-family: 'Google Sans Flex', 'Inter', sans-serif !important;
-    font-weight: 500 !important;
-    letter-spacing: -0.2px !important;
-
-}
-
-</style>
-""", unsafe_allow_html=True)
-</style>
-""", unsafe_allow_html=True)
+        <p style="color:#64748B; margin-top:0;">
+            Esta acción eliminará el registro de la base de datos.
+        </p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 # =========================================================
 # HELPERS
