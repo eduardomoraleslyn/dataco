@@ -810,7 +810,7 @@ for indice, fila in res.iterrows():
             unsafe_allow_html=True
         )
 
-        c1, c2, _ = st.columns([0.55, 0.55, 5.9])
+        c1, c2, _ = st.columns([0.42, 0.42, 6.2])
 
         with c1:
 
