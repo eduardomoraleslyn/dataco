@@ -181,11 +181,10 @@ button[kind="primary"] {
     font-weight: 600 !important;
     font-size: 0.78rem !important;
     border: none !important;
-    height: 28px !important;
-    width: 100% !important;
-    box-shadow: none !important;
-    margin-top: -4px !important;
-    margin-bottom: 14px !important;
+    height: 32px !important;
+font-size: 0.75rem !important;
+padding: 0px 6px !important;
+border-radius: 8px !important;
 }
 
 .wrapper-btn-editar button {
