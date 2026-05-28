@@ -896,7 +896,7 @@ for indice, fila in res.iterrows():
     )
 
 
-            with col_edit:
+    with col_edit:
 
                 if st.button(
                     "Editar",
