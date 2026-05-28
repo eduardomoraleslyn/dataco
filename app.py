@@ -854,6 +854,9 @@ with c1:
 
 with c2:
 
+    import streamlit.components.v1 as components
+    import json
+
     correos_unicos = (
         res["Email"]
         .dropna()
@@ -862,19 +865,30 @@ with c2:
     )
 
     correos_texto = "; ".join(correos_unicos)
+    correos_js = json.dumps(correos_texto)
 
-    st.markdown(
+    components.html(
         f"""
         <button
-            class="btn-difusion-premium"
-            onclick="
-                navigator.clipboard.writeText(`{correos_texto}`);
-                const aviso = document.getElementById('aviso-copy-correos');
-                aviso.style.display = 'block';
-                setTimeout(() => {{
-                    aviso.style.display = 'none';
-                }}, 2000);
+            style="
+                width:100%;
+                height:38px;
+                background-color:#898989;
+                color:#3c3c3c;
+                border:none;
+                border-radius:6px;
+                font-weight:600;
+                font-size:14px;
+                cursor:pointer;
             "
+            onclick='
+                navigator.clipboard.writeText({correos_js});
+                const aviso = document.getElementById("aviso-copy-correos");
+                aviso.style.display = "block";
+                setTimeout(function() {{
+                    aviso.style.display = "none";
+                }}, 2000);
+            '
         >
             Copiar correos ({len(correos_unicos)})
         </button>
@@ -889,14 +903,15 @@ with c2:
                 background:#DCFCE7;
                 color:#166534;
                 font-weight:600;
-                font-size:0.9rem;
+                font-size:14px;
                 text-align:center;
+                font-family:sans-serif;
             "
         >
             Ya puedes pegar tus contactos!
         </div>
         """,
-        unsafe_allow_html=True
+        height=90
     )
 
 # =========================================================
