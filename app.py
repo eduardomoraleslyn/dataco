@@ -877,8 +877,7 @@ for indice, fila in res.iterrows():
             st.rerun()
 
     with col_delete:
-
-    st.markdown(
+        st.markdown(
         "<div style='height:28px'></div>",
         unsafe_allow_html=True
     )
