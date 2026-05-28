@@ -367,13 +367,6 @@ def cargar_datos():
 
     return df
 
-def guardar_dataframe(dataframe):
-
-    dataframe.to_excel(
-        archivo_excel,
-        index=False,
-        engine='openpyxl'
-    )
 
 # =========================================================
 # MODALES
