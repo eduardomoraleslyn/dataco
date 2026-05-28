@@ -644,7 +644,7 @@ with col_tit:
 with col_btn:
 
     st.write("")
-    if st.button(
+if st.button(
     "＋ Alta de usuario",
     key="btn_alta",
     type="primary",
@@ -655,7 +655,7 @@ with col_btn:
     st.session_state.modal_eliminar_abierto = False
     st.session_state.fila_seleccionada_idx = None
 
-        modal_nuevo_contacto()
+    modal_nuevo_contacto()
 
 # =========================================================
 # SEARCH
