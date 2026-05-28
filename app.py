@@ -358,7 +358,7 @@ def modal_nuevo_contacto():
             ["Masculino", "Femenino", "No especificado"]
         )
 
-        n_dir = c2.text_input("Dirección general")
+        n_dir = c2.text_input("Área / Dirección")
 
         n_ing = st.date_input("Fecha de ingreso")
 
