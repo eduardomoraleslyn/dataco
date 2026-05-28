@@ -724,7 +724,7 @@ for indice, fila in res.iterrows():
 
             if st.button(
                 "Editar",
-                key=f"edit_{indice}",
+                key=f"edit_{fila['ID']}",
                 use_container_width=True
             ):
 
@@ -798,7 +798,7 @@ for indice, fila in res.iterrows():
 
             if st.button(
                 "Editar",
-                key=f"edit_{indice}",
+                key=f"edit_{fila['ID']}",
                 use_container_width=True
             ):
 
@@ -848,7 +848,7 @@ for indice, fila in res.iterrows():
 
             if st.button(
                 "Editar",
-                key=f"edit_{indice}",
+                key=f"edit_{fila['ID']}",
                 use_container_width=True
             ):
 
