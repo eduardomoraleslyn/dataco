@@ -834,7 +834,7 @@ for indice, fila in res.iterrows():
 
     st.markdown('<div class="contact-row">', unsafe_allow_html=True)
 
-    col_info, col_edit, col_delete = st.columns([6.2, 0.7, 0.7])
+    col_info, col_edit, col_delete = st.columns([7.2, 0.45, 0.45])
 
     with col_info:
 
