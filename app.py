@@ -303,7 +303,6 @@ def modal_nuevo_contacto():
           df = cargar_datos()
 
 st.write(df.columns.tolist())
-
             nueva_fila = pd.DataFrame([{
                 "ID": n_id,
                 "Nombre": n_nom,
