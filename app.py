@@ -300,7 +300,9 @@ def modal_nuevo_contacto():
                 st.error("Ingresa un correo válido.")
                 return
 
-            st.write(df.columns.tolist())
+          df = cargar_datos()
+
+st.write(df.columns.tolist())
 
             nueva_fila = pd.DataFrame([{
                 "ID": n_id,
