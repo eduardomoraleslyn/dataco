@@ -57,44 +57,7 @@ st.markdown("""
 ... CSS que ya tienes ...
 
 
-/* =========================================
-   MODAL PREMIUM
-========================================= */
 
-div[data-testid="stDialog"] input,
-div[data-testid="stDialog"] select {
-
-    border-radius: 10px !important;
-}
-
-div[data-testid="stDialog"] [data-testid="stForm"] {
-
-    border-radius: 16px !important;
-
-    padding: 1.5rem !important;
-}
-
-div[data-testid="stDialog"] button {
-
-    border-radius: 10px !important;
-
-    font-weight: 600 !important;
-}
-
-div[data-testid="stDialog"] button[kind="primary"] {
-
-    background-color: #ed1c24 !important;
-
-    color: white !important;
-
-    width: 100% !important;
-
-    height: 44px !important;
-
-    border: none !important;
-
-    font-size: 15px !important;
-}
 
 </style>
 """, unsafe_allow_html=True)
