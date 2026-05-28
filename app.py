@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.express as px
 import os
 import time
+import unicodedata
 
 import gspread
 
