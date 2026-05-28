@@ -201,7 +201,7 @@ border-radius: 8px !important;
     width: 100% !important;
     height: 38px !important;
     background-color: #898989 !important;
-    color: #3c3c3c !important;
+    color: white !important;
     border: none !important;
     border-radius: 6px !important;
     font-weight: 600 !important;
