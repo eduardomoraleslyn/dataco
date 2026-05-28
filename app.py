@@ -737,49 +737,23 @@ def normalizar_texto(texto):
     
 if entrada:
 
-    entrada = entrada.strip().lower()
+    palabras_busqueda = normalizar_texto(entrada).split()
 
-    alias_busqueda = {
-        "cyp": "corporativo y planta",
-        "corp": "corporativo y planta",
-        "corporativo": "corporativo y planta",
-        "suc": "sucursal",
-        "sucs": "sucursal",
-        "sucursal": "sucursal",
-        "sucursales": "sucursal"
-    }
+    def coincide_filtro(fila):
 
-    if entrada.startswith("seg:"):
+        texto = " ".join([
+            normalizar_texto(valor)
+            for valor in fila.astype(str)
+        ])
 
-        termino = entrada.replace("seg:", "").strip()
-
-        termino = alias_busqueda.get(
-            termino,
-            termino
+        return all(
+            palabra in texto
+            for palabra in palabras_busqueda
         )
 
-        mascara = (
-            df["Segmento"]
-            .astype(str)
-            .str.lower()
-            .str.contains(termino, na=False)
-        )
-
-    else:
-
-        termino_busqueda = alias_busqueda.get(
-            entrada,
-            entrada
-        )
-
-        mascara = df.astype(str).apply(
-            lambda x: x.str.lower().str.contains(
-                termino_busqueda,
-                na=False
-            )
-        ).any(axis=1)
-
-    res = df[mascara].copy()
+    res = df[
+        df.apply(coincide_filtro, axis=1)
+    ]
 
 else:
 
