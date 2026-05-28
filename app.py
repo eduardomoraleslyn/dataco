@@ -419,7 +419,7 @@ def modal_editar_contacto(indice_fila, datos_actuales):
         c1, c2 = st.columns(2)
 
         ed_id = c1.text_input(
-    "ID",
+            "ID",
             value=str(datos_actuales["ID"])
         )
 
@@ -454,11 +454,15 @@ def modal_editar_contacto(indice_fila, datos_actuales):
         )
 
         ed_dir = c2.text_input(
-            "Dirección general",
-            value=str(datos_actuales["Área / Dirección"])
+            "Área / Dirección",
+            value=str(datos_actuales["Direccion"])
         )
 
-        if st.form_submit_button("Actualizar datos"):
+        if st.form_submit_button(
+            "Actualizar datos",
+            type="primary",
+            use_container_width=True
+        ):
 
             df_global = cargar_datos()
 
