@@ -464,25 +464,32 @@ def modal_editar_contacto(indice_fila, datos_actuales):
             use_container_width=True
         ):
 
-            df_global = cargar_datos()
+            if st.form_submit_button(
 
-            df_global = df_global.astype("object")
+    "Actualizar datos",
+    type="primary",
+    use_container_width=True
+):
 
-df_global.loc[indice_fila, "ID"] = ed_id
-df_global.loc[indice_fila, "Nombre"] = ed_nom
-df_global.loc[indice_fila, "Email"] = ed_cor
-df_global.loc[indice_fila, "Centro"] = ed_cen
-df_global.loc[indice_fila, "Puesto"] = ed_pue
-df_global.loc[indice_fila, "Segmento"] = ed_seg
-df_global.loc[indice_fila, "Genero"] = ed_gen
-df_global.loc[indice_fila, "Direccion"] = ed_dir
-df_global.loc[indice_fila, "Ingreso"] = str(datos_actuales["Ingreso"])
+    df_global = cargar_datos()
 
-            guardar_dataframe(df_global)
+    df_global = df_global.astype("object")
 
-            st.session_state.modal_editar_abierto = False
+    df_global.loc[indice_fila, "ID"] = ed_id
+    df_global.loc[indice_fila, "Nombre"] = ed_nom
+    df_global.loc[indice_fila, "Email"] = ed_cor
+    df_global.loc[indice_fila, "Centro"] = ed_cen
+    df_global.loc[indice_fila, "Puesto"] = ed_pue
+    df_global.loc[indice_fila, "Segmento"] = ed_seg
+    df_global.loc[indice_fila, "Genero"] = ed_gen
+    df_global.loc[indice_fila, "Direccion"] = ed_dir
+    df_global.loc[indice_fila, "Ingreso"] = str(datos_actuales["Ingreso"])
 
-            st.rerun()
+    guardar_dataframe(df_global)
+
+    st.session_state.modal_editar_abierto = False
+
+    st.rerun()
 
 @st.dialog("Confirmar eliminación")
 def modal_eliminar_contacto(indice_fila, nombre_colaborador):
