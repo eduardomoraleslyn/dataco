@@ -257,7 +257,7 @@ div[data-testid="stDialog"] button[kind="primary"] {
 }
 .contact-row {
     padding: .5rem .5rem .5rem .5rem;
-    border-bottom: 1px solid #E2E8F0;
+    border-bottom: 5px solid #E2E8F0;
 }
 
 .contact-row-name {
