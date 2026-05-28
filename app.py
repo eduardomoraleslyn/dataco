@@ -117,7 +117,7 @@ h1 {
 
     background-color: transparent;
 
-    padding: 1.2rem 0rem 0.5rem 0rem;
+    padding: 5rem 5rem 5rem 5rem;
 
     border-radius: 0px;
 
