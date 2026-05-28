@@ -53,220 +53,32 @@ if "fila_seleccionada_idx" not in st.session_state:
 
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@300;400;500;600;700&display=swap');
+st.markdown("""
+<style>
 
-.stApp, html, body, [data-testid="stMarkdownContainer"], button, input, select, h1, h2, h3, .stAlert {
-    font-family: 'Google Sans Flex', sans-serif !important;
+/* COSAS CSS ARRIBA */
+
+.contact-row {
+    ...
 }
 
-.main { background-color: #F8FAFC; }
-
-h1 {
-    color: #0F172A !important;
-    font-weight: 400 !important;
-    letter-spacing: -0.5px !important;
-    margin-bottom: 0px !important;
-    padding-bottom: 0px !important;
-}
-
-.subtitle-corp {
-    color: #475569 !important;
-    font-size: 1.3rem !important;
-    font-weight: 500 !important;
-    margin-top: -5px !important;
-    margin-bottom: 20px !important;
-}
-
-.analytics-panel {
-    background-color: white;
-    padding: 1.5rem 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-    margin-bottom: 20px;
-}
-
-.analytics-title {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #0F172A;
-    margin-bottom: 1rem;
-}
-
-.metric-container-horizontal {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100%;
-    padding-left: 10px;
-}
-
-.metric-label-custom {
-    font-weight: 300 !important;
-    font-size: 0.9rem !important;
-    color: #64748B !important;
-    margin-bottom: 4px;
-}
-
-.metric-value-custom {
-    font-weight: 700 !important;
-    font-size: 1.6rem !important;
-    color: #0F172A !important;
-}
-
-.contact-card {
-
-    background-color: transparent;
-
-    padding: 1.2rem 0rem 0.5rem 0rem;
-
-    border-radius: 0px;
-
-    border-left: none;
-
-    box-shadow: none;
-
-    border-bottom: 1px solid #E2E8F0;
-
-    margin-bottom: 12px;
-}
-
-.card-name {
-    color: #1E3A8A;
-    font-size: 1.35rem;
-    font-weight: 700;
-    letter-spacing: -0.6px;
-}
-
-.badge-lyncott {
-    background-color: #EFF6FF !important;
-    color: #1E40AF !important;
-    padding: 3px 12px !important;
-    border-radius: 20px !important;
-    font-weight: 600 !important;
-    font-size: 0.8rem !important;
-    display: inline-block !important;
-}
-
-div[data-testid="InputInstructions"] {
-    display: none !important;
-}
-
-div[data-testid="stDownloadButton"] button {
-    background-color: #898989 !important;
-    color: #3c3c3c !important;
-    border: none !important;
-    border-radius: 6px !important;
-    height: 38px !important;
-    font-size: 14px !important;
-    font-weight: 600 !important;
-    width: 100% !important;
-    box-shadow: none !important;
-}
-
-button[kind="primary"] {
-    background-color: #ed1c24 !important;
-    color: white !important;
-    border: none !important;
-    border-radius: 6px !important;
-    height: 42px !important;
-    font-size: 15px !important;
-    font-weight: 700 !important;
-    width: 100% !important;
-    margin-top: 15px !important;
-}
-
-.wrapper-btn-editar button,
-.wrapper-btn-borrar button {
-    border-radius: 8px !important;
-    font-weight: 600 !important;
-    font-size: 0.78rem !important;
-    border: none !important;
-    height: 32px !important;
-font-size: 0.75rem !important;
-padding: 0px 6px !important;
-border-radius: 8px !important;
-}
-
-.wrapper-btn-editar button {
-    background-color: #FFDE21 !important;
-    color: #333333 !important;
-}
-
-.wrapper-btn-borrar button {
-    background-color: #ed1c24 !important;
-    color: white !important;
-}
+/* MÁS CSS */
 
 .btn-difusion-premium {
-    width: 100% !important;
-    height: 38px !important;
-    background-color: #3c3c3c !important;
+    ...
+}
+
+/* BOTÓN EXPORTAR EXCEL */
+
+.stDownloadButton button {
+
     color: white !important;
-    border: none !important;
-    border-radius: 6px !important;
-    font-weight: 600 !important;
-    font-size: 14px !important;
-    cursor: pointer !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    text-decoration: none !important;
-}
-/* MODAL: alta / edición */
+    font-family: 'Google Sans Flex', 'Inter', sans-serif !important;
+    font-weight: 500 !important;
+    letter-spacing: -0.2px !important;
 
-div[data-testid="stDialog"] [data-testid="stForm"] {
-    border-radius: 16px !important;
-    padding: 1.3rem !important;
 }
 
-div[data-testid="stDialog"] input,
-div[data-testid="stDialog"] select {
-    border-radius: 10px !important;
-}
-
-div[data-testid="stDialog"] button {
-    border-radius: 10px !important;
-    font-weight: 600 !important;
-}
-
-div[data-testid="stDialog"] button[kind="primary"] {
-    background-color: #ed1c24 !important;
-    color: white !important;
-    width: 100% !important;
-    height: 44px !important;
-    border: none !important;
-    margin-top: 8px !important;
-}
-.contact-row {
-    padding: 1rem 0rem 0.9rem 0rem;
-    border-bottom: 1px solid #E2E8F0;
-}
-
-.contact-row-name {
-    color: #1E3A8A;
-    font-size: 1.25rem;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-}
-
-.contact-row-id {
-    color: #94A3B8;
-    font-size: 0.85rem;
-    font-weight: 400;
-}
-
-.contact-row-puesto {
-    color: #334155;
-    font-size: 0.95rem;
-    font-weight: 600;
-    margin-top: 4px;
-}
-
-.contact-row-meta {
-    color: #64748B;
-    font-size: 0.85rem;
-    margin-top: 4px;
-}
 </style>
 """, unsafe_allow_html=True)
 
@@ -874,7 +686,7 @@ with c2:
             style="
     width:100%;
     height:38px;
-    background-color:#111827;
+    background-color:#898989;
     color:white;
     border:none;
     border-radius:10px;
