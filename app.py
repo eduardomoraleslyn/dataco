@@ -134,7 +134,13 @@ if st.session_state.mostrar_eliminado: modal_eliminado_exitoso()
 if not os.path.exists(archivo_csv):
     pd.DataFrame(columns=["ID", "Nombre", "Email", "Centro", "Puesto", "Segmento", "Genero", "Direccion", "Ingreso"]).to_csv(archivo_csv, index=False)
 
-df_crudo = pd.read_csv(archivo_csv, on_bad_lines='skip', encoding='utf-8-sig')
+try:
+       df_crudo = pd.read_csv(archivo_csv, on_bad_lines='skip', encoding='utf-8')
+   except UnicodeDecodeError:
+       try:
+           df_crudo = pd.read_csv(archivo_csv, on_bad_lines='skip', encoding='latin1')
+       except UnicodeDecodeError:
+           df_crudo = pd.read_csv(archivo_csv, on_bad_lines='skip', encoding='cp1252')
 df = df_crudo.iloc[:, :9].copy()
 df.columns = ["ID", "Nombre", "Email", "Centro", "Puesto", "Segmento", "Genero", "Direccion", "Ingreso"]
 
