@@ -706,21 +706,6 @@ else:
 
     res = df.copy()
 
-    termino_busqueda = alias_busqueda.get(entrada, entrada)
-
-    mascara = df.astype(str).apply(
-        lambda x: x.str.lower().str.contains(
-            termino_busqueda,
-            na=False
-        )
-    ).any(axis=1)
-
-    res = df[mascara].copy()
-
-else:
-
-    res = df.copy()
-
 # =========================================================
 # ANALYTICS
 # =========================================================
