@@ -52,7 +52,7 @@ st.markdown("""
 
 archivo_csv = "Base de datos.csv"
 def guardar_dataframe(dataframe):
-    # SOLUCIÓN: Forzamos a que guarde con codificación latina para que mantenga compatibilidad con Excel
+    # Corrección: Guardamos con codificación latina explícita
     dataframe.to_csv(archivo_csv, index=False, quoting=csv.QUOTE_ALL, encoding='latin1')
 
 @st.dialog("Agregar nuevo colaborador")
@@ -98,7 +98,7 @@ def modal_editar_contacto(indice_fila, datos_actuales):
         ed_gen = c1.selectbox("Género", ["Masculino", "Femenino", "No especificado"], index=0)
         ed_dir = c2.text_input("Dirección general", value=str(datos_actuales.iloc[7]))
         if st.form_submit_button("Actualizar datos"):
-            # SOLUCIÓN: Agregamos encoding='latin1' aquí para abrir el archivo correctamente al editar
+            # Corrección: Agregamos encoding='latin1' para la lectura interna de edición
             df_global = pd.read_csv(archivo_csv, on_bad_lines='skip', encoding='latin1')
             df_global.loc[indice_fila, df_global.columns[:9]] = [ed_id, ed_nom, ed_cor, ed_cen, ed_pue, ed_seg, ed_gen, ed_dir, str(datos_actuales.iloc[8])]
             guardar_dataframe(df_global)
@@ -115,7 +115,7 @@ def modal_eliminar_contacto(indice_fila, nombre_colaborador):
         st.session_state.modal_eliminar_abierto = False
         st.rerun()
     if c2.button("Sí, eliminar", use_container_width=True, type="primary"):
-        # SOLUCIÓN: Agregamos encoding='latin1' aquí también para proteger la lectura al borrar
+        # Corrección: Agregamos encoding='latin1' para la lectura interna de eliminación
         df_global = pd.read_csv(archivo_csv, on_bad_lines='skip', encoding='latin1')
         df_global = df_global.drop(indice_fila).reset_index(drop=True)
         guardar_dataframe(df_global)
@@ -254,14 +254,16 @@ else:
                 c_b1, c_b2, c_spacer = st.columns([1, 1, 4.5])
                 with c_b1:
                     st.markdown('<div class="wrapper-btn-editar" style="margin-top: -25px; margin-left: 20px; margin-bottom: 25px;">', unsafe_allow_html=True)
-                    if st.button("✏️ Editar", key=f"btn_edit_{fila['ID']}", use_container_width=True):
+                    # Corrección: Removidos los emojis de la etiqueta del botón
+                    if st.button("Editar", key=f"btn_edit_{fila['ID']}", use_container_width=True):
                         st.session_state.fila_seleccionada_idx = int(indice_original)
                         st.session_state.modal_editar_abierto = True
                         st.rerun()
                     st.markdown('</div>', unsafe_allow_html=True)
                 with c_b2:
                     st.markdown('<div class="wrapper-btn-borrar" style="margin-top: -25px; margin-left: 10px; margin-bottom: 25px;">', unsafe_allow_html=True)
-                    if st.button("🗑️ Borrar", key=f"btn_del_{fila['ID']}", use_container_width=True):
+                    # Corrección: Removidos los emojis de la etiqueta del botón
+                    if st.button("Borrar", key=f"btn_del_{fila['ID']}", use_container_width=True):
                         st.session_state.fila_seleccionada_idx = int(indice_original)
                         st.session_state.modal_eliminar_abierto = True
                         st.rerun()
