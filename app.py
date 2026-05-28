@@ -22,7 +22,10 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-archivo_excel = "Base de datos.xlsx"
+```python
+SHEET_ID = "PEGA_AQUI_EL_ID_DE_TU_GOOGLE_SHEET"
+```
+
 
 COLUMNAS = [
     "ID",
