@@ -114,31 +114,19 @@ h1 {
 }
 
 .contact-card {
-    background-color: white;
-    padding: 1.5rem;
-    border-radius: 12px;
-    border-left: 5px solid #1E40AF;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-    margin-bottom: 2px;
-}
 
-.card-name {
-    color: #1E3A8A;
-    font-size: 1.2rem;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-}
+    background-color: transparent;
 
-.card-puesto {
-    color: #475569;
-    font-weight: 600;
-    font-size: 0.95rem;
-    margin-bottom: 0.5rem;
-}
+    padding: 1.2rem 0rem 0.5rem 0rem;
 
-.card-meta {
-    color: #64748B;
-    font-size: 0.85rem;
+    border-radius: 0px;
+
+    border-left: none;
+
+    box-shadow: none;
+
+    border-bottom: 1px solid #E2E8F0;
+
     margin-bottom: 12px;
 }
 
