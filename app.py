@@ -861,23 +861,27 @@ for indice, fila in res.iterrows():
 )
 
     with col_edit:
-        st.markdown(
-    "<div style='height:28px'></div>",
-    unsafe_allow_html=True
-)
 
-        if st.button(
-            "Editar",
-            key=f"edit_unique_{indice}",
-            use_container_width=True
-        ):
+    st.markdown(
+        "<div style='height:28px'></div>",
+        unsafe_allow_html=True
+    )
 
-            st.session_state.fila_seleccionada_idx = indice
-            st.session_state.modal_editar_abierto = True
-            st.rerun()
+    if st.button(
+        "Editar",
+        key=f"edit_unique_{indice}",
+        use_container_width=True
+    ):
 
-    with col_delete:
-        st.markdown(
+        st.session_state.fila_seleccionada_idx = indice
+        st.session_state.modal_editar_abierto = True
+        st.session_state.modal_eliminar_abierto = False
+
+        st.rerun()
+
+with col_delete:
+
+    st.markdown(
         "<div style='height:28px'></div>",
         unsafe_allow_html=True
     )
