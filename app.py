@@ -881,9 +881,10 @@ with c2:
     border-radius:10px;
     font-weight:500;
     font-size:14px;
-    font-family:'Google Sans Flex','Inter',sans-serif;
-    letter-spacing:-0.2px;
+    font-family:'Google Sans Flex',sans-serif;
+    letter-spacing:0px;
     cursor:pointer;
+    box-shadow:none;
 "
             onclick='
                 navigator.clipboard.writeText({correos_js});
