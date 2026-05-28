@@ -664,7 +664,6 @@ with col_btn:
 st.write("---")
 
 entrada = st.text_input(
-    "Barra de búsqueda",
     placeholder="Escribe para realizar tu búsqueda..."
 ).strip().lower()
 
