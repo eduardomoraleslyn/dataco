@@ -646,13 +646,17 @@ with col_btn:
     st.write("")
 
     if st.button(
-        "＋ Alta de usuario",
-        key="btn_alta",
-        type="primary",
-        use_container_width=True
-    ):
+    "＋ Alta de usuario",
+    key="btn_alta",
+    type="primary",
+    use_container_width=True
+):
 
-        modal_nuevo_contacto()
+    st.session_state.modal_editar_abierto = False
+    st.session_state.modal_eliminar_abierto = False
+    st.session_state.fila_seleccionada_idx = None
+
+    modal_nuevo_contacto()
 
 # =========================================================
 # SEARCH
