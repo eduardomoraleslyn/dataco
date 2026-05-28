@@ -816,6 +816,56 @@ for indice, fila in res.iterrows():
 
                 st.rerun()
 
+            st.markdown(
+                '</div>',
+                unsafe_allow_html=True
+            )
+
+        with c2:
+
+            st.markdown(
+                '<div class="wrapper-btn-borrar">',
+                unsafe_allow_html=True
+            )
+
+            if st.button(
+                "Borrar",
+                key=f"del_{indice}",
+                use_container_width=True
+            ):
+
+                st.session_state.fila_seleccionada_idx = indice
+
+                st.session_state.modal_eliminar_abierto = True
+
+                st.rerun()
+
+            st.markdown(
+                '</div>',
+                unsafe_allow_html=True
+            )
+
+        c1, c2, _ = st.columns([1,1,4])
+
+        with c1:
+
+            st.markdown(
+                '<div class="wrapper-btn-editar">',
+                unsafe_allow_html=True
+            )
+
+            if st.button(
+                "Editar",
+                key=f"edit_{indice}",
+                use_container_width=True
+            ):
+
+                st.session_state.fila_seleccionada_idx = indice
+
+                st.session_state.modal_editar_abierto = True
+
+                st.rerun()
+
             st.markdown('</div>', unsafe_allow_html=True)
 
         with c2:
