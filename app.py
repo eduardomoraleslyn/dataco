@@ -835,16 +835,16 @@ for indice, fila in res.iterrows():
 
     col_info, col_edit, col_delete = st.columns([5.8, 0.55, 0.55])
 
-    with col_edit:
-    if st.button("Editar", key=f"edit_unique_{indice}", use_container_width=True):
-        st.session_state.fila_seleccionada_idx = indice
-        st.session_state.modal_editar_abierto = True
-        st.session_state.modal_eliminar_abierto = False
-        st.rerun()
+                with col_edit:
 
-with col_delete:
-    if st.button("Borrar", key=f"delete_unique_{indice}", use_container_width=True):
-        st.session_state.fila_seleccionada_idx = indice
-        st.session_state.modal_eliminar_abierto = True
-        st.session_state.modal_editar_abierto = False
-        st.rerun()
+                if st.button(
+                    "Editar",
+                    key=f"edit_unique_{indice}",
+                    use_container_width=True
+                ):
+
+                    st.session_state.fila_seleccionada_idx = indice
+                    st.session_state.modal_editar_abierto = True
+                    st.session_state.modal_eliminar_abierto = False
+
+                    st.rerun()
