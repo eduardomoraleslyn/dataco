@@ -894,32 +894,3 @@ for indice, fila in res.iterrows():
         '</div>',
         unsafe_allow_html=True
     )
-
-
-    with col_edit:
-
-                if st.button(
-                    "Editar",
-                    key=f"edit_unique_{indice}",
-                    use_container_width=True
-                ):
-
-                    st.session_state.fila_seleccionada_idx = indice
-                    st.session_state.modal_editar_abierto = True
-                    st.session_state.modal_eliminar_abierto = False
-
-                    st.rerun()
-
-    with col_delete:
-
-                if st.button(
-                    "Borrar",
-                    key=f"delete_unique_{indice}",
-                    use_container_width=True
-                ):
-
-                    st.session_state.fila_seleccionada_idx = indice
-                    st.session_state.modal_eliminar_abierto = True
-                    st.session_state.modal_editar_abierto = False
-
-                    st.rerun()
