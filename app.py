@@ -237,7 +237,7 @@ def modal_eliminado_exitoso():
 if st.session_state.mostrar_confirmacion: modal_confirmacion()
 if st.session_state.mostrar_eliminado: modal_eliminado_exitoso()
 
-if not os.path.exists(archivo_csv):
+if not os.path.exists(archivo_excel):
     pd.DataFrame(columns=COLUMNAS)
 
 try:
