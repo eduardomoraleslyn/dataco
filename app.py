@@ -706,56 +706,56 @@ for indice, fila in res.iterrows():
     with st.container():
 
         card_html = f"""
-        <div class="contact-card">
+<div class="contact-card">
 
-            <div style="
-                display:flex;
-                justify-content:space-between;
-                align-items:center;
-                width:100%;
+    <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        width:100%;
+    ">
+
+        <div class="card-name">
+            {fila["Nombre"]}
+
+            <span style="
+                color:#94A3B8;
+                font-size:0.85rem;
+                font-weight:400;
             ">
-
-                <div class="card-name">
-                    {fila["Nombre"]}
-
-                    <span style="
-                        color:#94A3B8;
-                        font-size:0.85rem;
-                        font-weight:400;
-                    ">
-                        ({fila["ID"]})
-                    </span>
-                </div>
-
-                <div>
-                    <span class="badge-lyncott">
-                        {fila["Segmento"]}
-                    </span>
-                </div>
-
-            </div>
-
-            <div style="margin-top:8px;">
-
-                <div class="card-puesto">
-                    Puesto: {fila["Puesto"]}
-                </div>
-
-                <div class="card-meta">
-                    Correo: {fila["Email"]} |
-                    Centro: {fila["Centro"]} |
-                    Dirección: {fila["Direccion"]}
-                </div>
-
-            </div>
-
+                ({fila["ID"]})
+            </span>
         </div>
-        """
 
-        st.markdown(
-            card_html,
-            unsafe_allow_html=True
-        )
+        <div>
+            <span class="badge-lyncott">
+                {fila["Segmento"]}
+            </span>
+        </div>
+
+    </div>
+
+    <div style="margin-top:8px;">
+
+        <div class="card-puesto">
+            Puesto: {fila["Puesto"]}
+        </div>
+
+        <div class="card-meta">
+            Correo: {fila["Email"]} |
+            Centro: {fila["Centro"]} |
+            Dirección: {fila["Direccion"]}
+        </div>
+
+    </div>
+
+</div>
+"""
+
+st.markdown(
+    card_html,
+    unsafe_allow_html=True
+)
 
         c1, c2, _ = st.columns([1, 1, 4])
 
