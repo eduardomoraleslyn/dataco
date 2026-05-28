@@ -54,131 +54,9 @@ if "fila_seleccionada_idx" not in st.session_state:
 st.markdown("""
 <style>
 
-@import url('https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@300;400;500;600;700&display=swap');
+... CSS que ya tienes ...
 
-.stApp, html, body,
-[data-testid="stMarkdownContainer"],
-button, input, select, h1, h2, h3, .stAlert {
-    font-family: 'Google Sans Flex', sans-serif !important;
-}
 
-.main {
-    background-color: #F8FAFC;
-}
-
-h1 {
-    color: #0F172A !important;
-    font-weight: 400 !important;
-    letter-spacing: -0.5px !important;
-    margin-bottom: 0px !important;
-}
-
-.subtitle-corp {
-    color: #475569 !important;
-    font-size: 1.3rem !important;
-    font-weight: 500 !important;
-    margin-top: -5px !important;
-    margin-bottom: 20px !important;
-}
-
-.analytics-panel {
-    background-color: white;
-    padding: 1.5rem 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-    margin-bottom: 20px;
-}
-
-.analytics-title {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #0F172A;
-    margin-bottom: 1rem;
-}
-
-.metric-container-horizontal {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100%;
-    padding-left: 10px;
-}
-
-.metric-label-custom {
-    font-weight: 300 !important;
-    font-size: 0.9rem !important;
-    color: #64748B !important;
-    margin-bottom: 4px;
-}
-
-.metric-value-custom {
-    font-weight: 700 !important;
-    font-size: 1.6rem !important;
-    color: #0F172A !important;
-}
-
-.contact-card {
-    background-color: white;
-    padding: 1.5rem;
-    border-radius: 12px;
-    border-left: 5px solid #1E40AF;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-    margin-bottom: 15px;
-}
-
-.card-name {
-    color: #1E3A8A;
-    font-size: 1.2rem;
-    font-weight: 700;
-}
-
-.card-puesto {
-    color: #475569;
-    font-weight: 600;
-    font-size: 0.95rem;
-    margin-bottom: 0.5rem;
-}
-
-.card-meta {
-    color: #64748B;
-    font-size: 0.85rem;
-    margin-bottom: 12px;
-}
-
-.badge-lyncott {
-    background-color: #EFF6FF !important;
-    color: #1E40AF !important;
-    padding: 3px 12px !important;
-    border-radius: 20px !important;
-    font-weight: 600 !important;
-    font-size: 0.8rem !important;
-}
-
-.wrapper-btn-editar button {
-    background-color: #FFDE21 !important;
-    color: #333333 !important;
-    border-radius: 6px !important;
-    border: none !important;
-}
-
-.wrapper-btn-borrar button {
-    background-color: #ed1c24 !important;
-    color: white !important;
-    border-radius: 6px !important;
-    border: none !important;
-}
-
-.btn-difusion-premium {
-    width: 100% !important;
-    height: 38px !important;
-    background-color: #898989 !important;
-    color: #3c3c3c !important;
-    border: none !important;
-    border-radius: 6px !important;
-    font-weight: 600 !important;
-}
-
-</style>
 /* =========================================
    MODAL PREMIUM
 ========================================= */
@@ -217,6 +95,8 @@ div[data-testid="stDialog"] button[kind="primary"] {
 
     font-size: 15px !important;
 }
+
+</style>
 """, unsafe_allow_html=True)
 
 # =========================================================
