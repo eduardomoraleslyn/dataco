@@ -872,16 +872,18 @@ with c2:
         f"""
         <button
             style="
-                width:100%;
-                height:38px;
-                background-color:#898989;
-                color:#3c3c3c;
-                border:none;
-                border-radius:6px;
-                font-weight:600;
-                font-size:14px;
-                cursor:pointer;
-            "
+    width:100%;
+    height:38px;
+    background-color:#111827;
+    color:white;
+    border:none;
+    border-radius:10px;
+    font-weight:500;
+    font-size:14px;
+    font-family:'Google Sans Flex','Inter',sans-serif;
+    letter-spacing:-0.2px;
+    cursor:pointer;
+"
             onclick='
                 navigator.clipboard.writeText({correos_js});
                 const aviso = document.getElementById("aviso-copy-correos");
