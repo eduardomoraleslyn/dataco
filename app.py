@@ -153,7 +153,8 @@ div[data-testid="InputInstructions"] {
 
 div[data-testid="stDownloadButton"] button {
     background-color: #898989 !important;
-    color: #3c3c3c !important;
+    color: white !important;
+    font-family: 'Google Sans Flex', sans-serif !important;
     border: none !important;
     border-radius: 6px !important;
     height: 38px !important;
