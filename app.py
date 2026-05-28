@@ -418,6 +418,7 @@ def modal_eliminado_exitoso():
 # =========================================================
 
 df = cargar_datos()
+st.write(df.columns.tolist())
 
 # =========================================================
 # MODALES
