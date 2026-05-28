@@ -877,19 +877,20 @@ for indice, fila in res.iterrows():
             st.rerun()
 
     with col_delete:
-        st.markdown(
-    "<div style='height:28px'></div>",
-    unsafe_allow_html=True
-)
 
-        if st.button(
-            "Borrar",
-            key=f"delete_unique_{indice}",
-            use_container_width=True
-        ):
+    st.markdown(
+        "<div style='height:28px'></div>",
+        unsafe_allow_html=True
+    )
 
-            st.session_state.fila_seleccionada_idx = indice
-            st.session_state.modal_eliminar_abierto = True
-            st.rerun()
+    if st.button(
+        "Borrar",
+        key=f"delete_unique_{indice}",
+        use_container_width=True
+    ):
 
-    st.markdown('</div>', unsafe_allow_html=True)
+        st.session_state.fila_seleccionada_idx = indice
+        st.session_state.modal_eliminar_abierto = True
+        st.session_state.modal_editar_abierto = False
+
+        st.rerun()
