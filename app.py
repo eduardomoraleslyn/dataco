@@ -879,6 +879,7 @@ for indice, fila in res.iterrows():
 
         st.rerun()
 
+
 with col_delete:
 
     st.markdown(
