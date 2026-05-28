@@ -206,9 +206,50 @@ def cargar_datos():
         engine='openpyxl'
     )
 
-    df = df.iloc[:, :9].copy()
+    # LIMPIAR ESPACIOS
+    df.columns = df.columns.str.strip()
 
-    df.columns = COLUMNAS
+    # MAPEO FLEXIBLE
+    mapa_columnas = {
+        "ID": "ID",
+        "ID empleado": "ID",
+
+        "Nombre": "Nombre",
+        "Nombre completo": "Nombre",
+
+        "Email": "Email",
+        "Correo": "Email",
+        "Correo electrónico": "Email",
+
+        "Centro": "Centro",
+        "Centro de trabajo": "Centro",
+
+        "Puesto": "Puesto",
+
+        "Segmento": "Segmento",
+
+        "Genero": "Genero",
+        "Género": "Genero",
+
+        "Direccion": "Direccion",
+        "Dirección": "Direccion",
+        "Dirección general": "Direccion",
+
+        "Ingreso": "Ingreso",
+        "Fecha de ingreso": "Ingreso"
+    }
+
+    # RENOMBRAR SEGÚN MAPA
+    df = df.rename(columns=mapa_columnas)
+
+    # ASEGURAR COLUMNAS
+    for col in COLUMNAS:
+
+        if col not in df.columns:
+            df[col] = ""
+
+    # ORDENAR
+    df = df[COLUMNAS]
 
     return df
 
