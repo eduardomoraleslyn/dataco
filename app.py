@@ -995,10 +995,10 @@ with col_botones_cards:
 
                 text-align:center;
 
-                color:#78B956;
+                color:#3c3c3c;
 
                 font-size:13px;
-                font-weight:600;
+                font-weight:300;
 
                 transition:opacity 0.2s ease;
             "
@@ -1015,10 +1015,10 @@ with col_botones_cards:
 
                 text-align:center;
 
-                color:#78B956;
+                color:#3c3c3c;
 
                 font-size:13px;
-                font-weight:600;
+                font-weight:300;
 
                 transition:opacity 0.2s ease;
             "
