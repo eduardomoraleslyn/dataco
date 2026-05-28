@@ -815,53 +815,61 @@ st.write("---")
 st.write(
     f"### Fichas de identidad del personal ({len(res)} resultados)"
 )
+
 for indice, fila in res.iterrows():
 
-    with st.container():        
+    st.markdown('<div class="contact-row">', unsafe_allow_html=True)
+
+    col_info, col_edit, col_delete = st.columns([6.2, 0.7, 0.7])
+
+    with col_info:
+
         st.markdown(
-            '<div style="background:white; border-radius:14px; padding:0px 18px 10px 18px; margin-bottom:18px; box-shadow:0 4px 10px rgba(0,0,0,0.04);">',
+            f'''
+            <div class="contact-row-name">
+                {fila["Nombre"]}
+                <span class="contact-row-id">({fila["ID"]})</span>
+            </div>
+
+            <div style="margin-top:6px;">
+                <span class="badge-lyncott">{fila["Segmento"]}</span>
+            </div>
+
+            <div class="contact-row-puesto">
+                Puesto: {fila["Puesto"]}
+            </div>
+
+            <div class="contact-row-meta">
+                Correo: {fila["Email"]} |
+                Centro: {fila["Centro"]} |
+                Dirección: {fila["Direccion"]}
+            </div>
+            ''',
             unsafe_allow_html=True
         )
-        
-        card_html = f'''
-<div class="contact-card">
-  <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-    <div class="card-name">{fila["Nombre"]} <span style="color:#94A3B8; font-size:0.85rem; font-weight:400;">({fila["ID"]})</span></div>
-    <div><span class="badge-lyncott">{fila["Segmento"]}</span></div>
-  </div>
-  <div style="margin-top:8px;">
-    <div class="card-puesto">Puesto: {fila["Puesto"]}</div>
-    <div class="card-meta">Correo: {fila["Email"]} | Centro: {fila["Centro"]} | Dirección: {fila["Direccion"]}</div>
-  </div>
-</div>
-'''
-        st.markdown(
-            card_html,
-            unsafe_allow_html=True
-        )
 
-        c1, c2, _ = st.columns([0.42, 0.42, 6.2])
+    with col_edit:
 
-        with c1:
+        if st.button(
+            "Editar",
+            key=f"edit_unique_{indice}",
+            use_container_width=True
+        ):
 
-            if st.button(
-                "Editar",
-                key=f"edit_unique_{indice}",
-                use_container_width=True
-            ):
+            st.session_state.fila_seleccionada_idx = indice
+            st.session_state.modal_editar_abierto = True
+            st.rerun()
 
-                st.session_state.fila_seleccionada_idx = indice
-                st.session_state.modal_editar_abierto = True
-                st.rerun()
+    with col_delete:
 
-        with c2:
+        if st.button(
+            "Borrar",
+            key=f"delete_unique_{indice}",
+            use_container_width=True
+        ):
 
-            if st.button(
-                "Borrar",
-                key=f"delete_unique_{indice}",
-                use_container_width=True
-            ):
+            st.session_state.fila_seleccionada_idx = indice
+            st.session_state.modal_eliminar_abierto = True
+            st.rerun()
 
-                st.session_state.fila_seleccionada_idx = indice
-                st.session_state.modal_eliminar_abierto = True
-                st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
