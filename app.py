@@ -792,8 +792,12 @@ st.write(
 )
 for indice, fila in res.iterrows():
 
-    with st.container():
-
+    with st.container():        
+        st.markdown(
+            '<div style="background:white; border-radius:14px; padding:0px 18px 10px 18px; margin-bottom:18px; box-shadow:0 4px 10px rgba(0,0,0,0.04);">',
+            unsafe_allow_html=True
+        )
+        
         card_html = f'''
 <div class="contact-card">
   <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
