@@ -54,19 +54,7 @@ if "fila_seleccionada_idx" not in st.session_state:
 st.markdown("""
 <style>
 
-/* COSAS CSS ARRIBA */
-
-.contact-row {
-    ...
-}
-
-/* MÁS CSS */
-
-.btn-difusion-premium {
-    ...
-}
-
-/* BOTÓN EXPORTAR EXCEL */
+/* CSS */
 
 .stDownloadButton button {
 
@@ -77,6 +65,8 @@ st.markdown("""
 
 }
 
+</style>
+""", unsafe_allow_html=True)
 </style>
 """, unsafe_allow_html=True)
 
