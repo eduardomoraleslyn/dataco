@@ -119,7 +119,7 @@ h1 {
     border-radius: 12px;
     border-left: 5px solid #1E40AF;
     box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-    margin-bottom: 15px;
+    margin-bottom: 2px;
 }
 
 .card-name {
