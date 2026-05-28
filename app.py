@@ -923,14 +923,17 @@ with col_botones_cards:
             </a>
 
             <button
-                onclick="
-                    navigator.clipboard.writeText({correos_js});
-                    const aviso = document.getElementById('msg-copiar');
-                    aviso.style.opacity = '1';
-                    setTimeout(() => {{
-                        aviso.style.opacity = '0';
-                    }}, 2000);
-                "
+    onclick='
+        navigator.clipboard.writeText({correos_js});
+
+        const aviso = document.getElementById("msg-copiar");
+
+        aviso.style.opacity = "1";
+
+        setTimeout(() => {{
+            aviso.style.opacity = "0";
+        }}, 2000);
+    '
                 style="
                     flex:1;
                     height:38px;
