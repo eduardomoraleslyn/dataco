@@ -361,7 +361,7 @@ def modal_nuevo_contacto():
 
     with st.form("form_alta"):
 
-        c1, c2 = st.columns(2)
+        c1, espacio, c2 = st.columns([1, 0.08, 1])
 
         n_id = c1.text_input("ID")
         n_nom = c2.text_input("Nombre completo")
@@ -439,7 +439,7 @@ def modal_editar_contacto(indice_fila, datos_actuales):
 
     with st.form("form_edicion"):
 
-        c1, c2 = st.columns(2)
+        c1, espacio, c2 = st.columns([1, 0.08, 1])
 
         ed_id = c1.text_input(
             "ID",
@@ -557,7 +557,7 @@ def modal_eliminar_contacto(indice_fila, nombre_colaborador):
         unsafe_allow_html=True
     )
 
-    c1, c2 = st.columns(2)
+    c1, espacio, c2 = st.columns([1, 0.08, 1])
 
     with c1:
         if st.button("Cancelar", use_container_width=True):
@@ -831,7 +831,7 @@ correos = "; ".join(
     res["Email"].dropna().astype(str).tolist()
 )
 
-c1, c2 = st.columns(2)
+c1, espacio, c2 = st.columns([1, 0.08, 1])
 
 with c1:
 
