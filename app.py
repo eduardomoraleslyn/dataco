@@ -3,6 +3,14 @@ import pandas as pd
 import plotly.express as px
 import os
 import time
+```python
+import gspread
+
+from oauth2client.service_account import ServiceAccountCredentials
+
+from gspread_dataframe import get_as_dataframe, set_with_dataframe
+```
+
 
 # =========================================================
 # CONFIG
