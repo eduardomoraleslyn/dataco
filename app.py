@@ -135,6 +135,8 @@ if not os.path.exists(archivo_csv):
     pd.DataFrame(columns=["ID", "Nombre", "Email", "Centro", "Puesto", "Segmento", "Genero", "Direccion", "Ingreso"]).to_csv(archivo_csv, index=False)
 
 df_crudo = pd.read_csv(archivo_csv, on_bad_lines='skip', encoding='latin1')
+for col in df_crudo.select_dtypes(include=['object']).columns:
+    df_crudo[col] = df_crudo[col].astype(str).str.encode('latin1', errors='ignore').str.decode('utf-8', errors='ignore')
 df = df_crudo.iloc[:, :9].copy()
 df.columns = ["ID", "Nombre", "Email", "Centro", "Puesto", "Segmento", "Genero", "Direccion", "Ingreso"]
 
