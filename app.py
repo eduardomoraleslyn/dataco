@@ -453,8 +453,7 @@ def modal_editar_contacto(indice_fila, datos_actuales):
             ["Masculino", "Femenino", "No especificado"]
         )
 
-        ed_dir = c2.text_input(
-                    ed_dir = c2.text_input(
+                ed_dir = c2.text_input(
             "Área / Dirección",
             value=str(datos_actuales["Direccion"])
         )
