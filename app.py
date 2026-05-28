@@ -50,7 +50,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-archivo_csv = "Base de datos.csv"
+archivo_excel = "Base de datos.xlsx"
 COLUMNAS = [
     "ID",
     "Nombre",
