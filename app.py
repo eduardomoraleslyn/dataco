@@ -238,6 +238,36 @@ div[data-testid="stDialog"] button[kind="primary"] {
     border: none !important;
     margin-top: 8px !important;
 }
+.contact-row {
+    padding: 1rem 0rem 0.9rem 0rem;
+    border-bottom: 1px solid #E2E8F0;
+}
+
+.contact-row-name {
+    color: #1E3A8A;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.contact-row-id {
+    color: #94A3B8;
+    font-size: 0.85rem;
+    font-weight: 400;
+}
+
+.contact-row-puesto {
+    color: #334155;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-top: 4px;
+}
+
+.contact-row-meta {
+    color: #64748B;
+    font-size: 0.85rem;
+    margin-top: 4px;
+}
 </style>
 """, unsafe_allow_html=True)
 
