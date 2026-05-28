@@ -27,10 +27,12 @@ st.markdown("""
     .metric-container-horizontal { display: flex; flex-direction: column; justify-content: center; height: 100%; padding-left: 10px; }
     .metric-label-custom { font-weight: 300 !important; font-size: 0.9rem !important; color: #64748B !important; line-height: 1.2; margin-bottom: 4px; }
     .metric-value-custom { font-weight: 700 !important; font-size: 1.6rem !important; color: #0F172A !important; line-height: 1; }
+    
+    /* Tarjeta institucional integrada */
     .contact-card { background-color: white; padding: 1.5rem; border-radius: 12px; border-left: 5px solid #1E40AF; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 15px; }
     .card-name { color: #1E3A8A; font-size: 1.2rem; font-weight: 700; letter-spacing: -0.5px; }
     .card-puesto { color: #475569; font-weight: 600; font-size: 0.95rem; margin-bottom: 0.5rem; }
-    .card-meta { color: #64748B; font-size: 0.85rem; margin-bottom: 12px; }
+    .card-meta { color: #64748B; font-size: 0.85rem; display: inline-block; vertical-align: middle; }
     div[data-testid="InputInstructions"] { display: none !important; }
     
     div[data-testid="stDownloadButton"] button {
@@ -40,9 +42,10 @@ st.markdown("""
     button[kind="primary"] { background-color: #ed1c24 !important; color: white !important; border: none !important; border-radius: 6px !important; height: 42px !important; font-size: 15px !important; font-weight: 700 !important; width: 100% !important; margin-top: 15px !important; }
     .badge-lyncott { background-color: #EFF6FF !important; color: #1E40AF !important; padding: 3px 12px !important; border-radius: 20px !important; font-weight: 600 !important; font-size: 0.8rem !important; line-height: 1.2 !important; display: inline-block !important; margin-right: 6px !important; }
     
-    .wrapper-btn-editar button { background-color: #FFDE21 !important; color: #333333 !important; border-radius: 6px !important; font-weight: 600 !important; font-size: 0.85rem !important; border: none !important; height: 32px !important; width: 100% !important; box-shadow: none !important; }
+    /* Botones micro reducidos a la mitad (22px de alto) */
+    .wrapper-btn-editar button { background-color: #FFDE21 !important; color: #333333 !important; border-radius: 4px !important; font-weight: 600 !important; font-size: 0.75rem !important; border: none !important; height: 22px !important; width: 100% !important; box-shadow: none !important; line-height: 1 !important; padding: 0px !important; }
     .wrapper-btn-editar button:hover { background-color: #e0c21b !important; }
-    .wrapper-btn-borrar button { background-color: #ed1c24 !important; color: white !important; border-radius: 6px !important; font-weight: 600 !important; font-size: 0.85rem !important; border: none !important; height: 32px !important; width: 100% !important; box-shadow: none !important; }
+    .wrapper-btn-borrar button { background-color: #ed1c24 !important; color: white !important; border-radius: 4px !important; font-weight: 600 !important; font-size: 0.75rem !important; border: none !important; height: 22px !important; width: 100% !important; box-shadow: none !important; line-height: 1 !important; padding: 0px !important; }
     .wrapper-btn-borrar button:hover { background-color: #c8131d !important; }
     
     .btn-difusion-premium { width: 100% !important; height: 38px !important; background-color: #898989 !important; color: #3c3c3c !important; border: none !important; border-radius: 6px !important; font-weight: 600 !important; font-size: 14px !important; cursor: pointer !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; text-decoration: none !important; }
@@ -51,8 +54,27 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 archivo_csv = "Base de datos.csv"
+
+def leer_dataframe_seguro():
+    try:
+        df_res = pd.read_csv(archivo_csv, on_bad_lines='skip', encoding='utf-8-sig')
+    except Exception:
+        try:
+            df_res = pd.read_csv(archivo_csv, on_bad_lines='skip', encoding='latin1')
+        except Exception:
+            df_res = pd.read_csv(archivo_csv, on_bad_lines='skip', encoding='cp1252')
+            
+    for col in df_res.select_dtypes(include=['object']).columns:
+        try:
+            df_res[col] = df_res[col].astype(str).str.encode('latin1', errors='ignore').str.decode('utf-8', errors='ignore')
+        except Exception:
+            pass
+            
+    df_res.columns = ["ID", "Nombre", "Email", "Centro", "Puesto", "Segmento", "Genero", "Direccion", "Ingreso"] + list(df_res.columns[9:])
+    return df_res
+
 def guardar_dataframe(dataframe):
-    dataframe.to_csv(archivo_csv, index=False, quoting=csv.QUOTE_ALL)
+    dataframe.to_csv(archivo_csv, index=False, quoting=csv.QUOTE_ALL, encoding='utf-8-sig')
 
 @st.dialog("Agregar nuevo colaborador")
 def modal_nuevo_contacto():
@@ -71,7 +93,7 @@ def modal_nuevo_contacto():
         if st.form_submit_button("Guardar contacto"):
             if n_nom and n_cor:
                 nueva_fila = pd.DataFrame([[n_id, n_nom, n_cor, n_cen, n_pue, n_seg, n_gen, n_dir, n_ing.strftime("%d/%m/%Y")]])
-                nueva_fila.to_csv(archivo_csv, mode='a', header=not os.path.exists(archivo_csv), index=False, quoting=csv.QUOTE_ALL)
+                nueva_fila.to_csv(archivo_csv, mode='a', header=not os.path.exists(archivo_csv), index=False, quoting=csv.QUOTE_ALL, encoding='utf-8-sig')
                 time.sleep(0.4)
                 st.session_state.mostrar_confirmacion = True
                 st.rerun()
@@ -97,8 +119,7 @@ def modal_editar_contacto(indice_fila, datos_actuales):
         ed_gen = c1.selectbox("Género", ["Masculino", "Femenino", "No especificado"], index=0)
         ed_dir = c2.text_input("Dirección general", value=str(datos_actuales.iloc[7]))
         if st.form_submit_button("Actualizar datos"):
-            # ARREGLADO: Agregamos encoding='latin1' aquí para evitar el error al guardar cambios
-            df_global = pd.read_csv(archivo_csv, on_bad_lines='skip', encoding='latin1')
+            df_global = leer_dataframe_seguro()
             df_global.loc[indice_fila, df_global.columns[:9]] = [ed_id, ed_nom, ed_cor, ed_cen, ed_pue, ed_seg, ed_gen, ed_dir, str(datos_actuales.iloc[8])]
             guardar_dataframe(df_global)
             st.session_state.modal_editar_abierto = False
@@ -114,8 +135,7 @@ def modal_eliminar_contacto(indice_fila, nombre_colaborador):
         st.session_state.modal_eliminar_abierto = False
         st.rerun()
     if c2.button("Sí, eliminar", use_container_width=True, type="primary"):
-        # ARREGLADO: Agregamos encoding='latin1' aquí también para proteger la función de borrar
-        df_global = pd.read_csv(archivo_csv, on_bad_lines='skip', encoding='latin1')
+        df_global = leer_dataframe_seguro()
         df_global = df_global.drop(indice_fila).reset_index(drop=True)
         guardar_dataframe(df_global)
         st.session_state.modal_eliminar_abierto = False
@@ -134,13 +154,10 @@ if st.session_state.mostrar_confirmacion: modal_confirmacion()
 if st.session_state.mostrar_eliminado: modal_eliminado_exitoso()
 
 if not os.path.exists(archivo_csv):
-    pd.DataFrame(columns=["ID", "Nombre", "Email", "Centro", "Puesto", "Segmento", "Genero", "Direccion", "Ingreso"]).to_csv(archivo_csv, index=False)
+    pd.DataFrame(columns=["ID", "Nombre", "Email", "Centro", "Puesto", "Segmento", "Genero", "Direccion", "Ingreso"]).to_csv(archivo_csv, index=False, encoding='utf-8-sig')
 
-df_crudo = pd.read_csv(archivo_csv, on_bad_lines='skip', encoding='latin1')
-for col in df_crudo.select_dtypes(include=['object']).columns:
-    df_crudo[col] = df_crudo[col].astype(str).str.encode('latin1', errors='ignore').str.decode('utf-8', errors='ignore')
+df_crudo = leer_dataframe_seguro()
 df = df_crudo.iloc[:, :9].copy()
-df.columns = ["ID", "Nombre", "Email", "Centro", "Puesto", "Segmento", "Genero", "Direccion", "Ingreso"]
 
 if st.session_state.modal_editar_abierto and st.session_state.fila_seleccionada_idx is not None:
     idx = st.session_state.fila_seleccionada_idx
@@ -246,21 +263,34 @@ else:
         for indice, fila in res.iterrows():
             indice_original = df[df['ID'] == fila['ID']].index[0]
             
+            # TODO EN UN SOLO CONTENEDOR INTEGRADO Y PROFESIONAL
             with st.container():
-                st.markdown(f'<div class="contact-card"><div style="display: flex; justify-content: space-between; align-items: center; width: 100%;"><div class="card-name">{fila["Nombre"]} <span style="color:#94A3B8; font-size:0.85rem; font-weight:400;">({fila["ID"]})</span></div><div><span class="badge-lyncott">{fila["Segmento"]}</span></div></div><div class="contact-card-body" style="margin-top: 5px;"><div class="card-puesto">Puesto: {fila["Puesto"]}</div><div class="card-meta">Correo: {fila["Email"]} | Centro: {fila["Centro"]} | Dirección: {fila["Direccion"]}</div></div></div>', unsafe_allow_html=True)
+                st.markdown(f'''
+                    <div class="contact-card" style="margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 5px;">
+                            <div class="card-name">{fila["Nombre"]} <span style="color:#94A3B8; font-size:0.85rem; font-weight:400;">({fila["ID"]})</span></div>
+                            <div><span class="badge-lyncott">{fila["Segmento"]}</span></div>
+                        </div>
+                        <div class="card-puesto" style="margin-bottom: 6px;">Puesto: {fila["Puesto"]}</div>
+                ''', unsafe_allow_html=True)
                 
-                c_b1, c_b2, c_spacer = st.columns([1, 1, 4.5])
-                with c_b1:
-                    st.markdown('<div class="wrapper-btn-editar" style="margin-top: -25px; margin-left: 20px; margin-bottom: 25px;">', unsafe_allow_html=True)
+                # Fila interna combinada: Datos a la izquierda y mini botones a la derecha en la misma línea
+                c_data, c_edit, c_del, c_end = st.columns([7.0, 0.8, 0.8, 0.4])
+                with c_data:
+                    st.markdown(f'<div class="card-meta">Correo: {fila["Email"]} | Centro: {fila["Centro"]} | Dirección: {fila["Direccion"]}</div>', unsafe_allow_html=True)
+                with c_edit:
+                    st.markdown('<div class="wrapper-btn-editar" style="margin-top: -6px;">', unsafe_allow_html=True)
                     if st.button("Editar", key=f"btn_edit_{fila['ID']}", use_container_width=True):
                         st.session_state.fila_seleccionada_idx = int(indice_original)
                         st.session_state.modal_editar_abierto = True
                         st.rerun()
                     st.markdown('</div>', unsafe_allow_html=True)
-                with c_b2:
-                    st.markdown('<div class="wrapper-btn-borrar" style="margin-top: -25px; margin-left: 10px; margin-bottom: 25px;">', unsafe_allow_html=True)
+                with c_del:
+                    st.markdown('<div class="wrapper-btn-borrar" style="margin-top: -6px;">', unsafe_allow_html=True)
                     if st.button("Borrar", key=f"btn_del_{fila['ID']}", use_container_width=True):
                         st.session_state.fila_seleccionada_idx = int(indice_original)
                         st.session_state.modal_eliminar_abierto = True
                         st.rerun()
                     st.markdown('</div>', unsafe_allow_html=True)
+                
+                st.markdown('</div>', unsafe_allow_html=True)
