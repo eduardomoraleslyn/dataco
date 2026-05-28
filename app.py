@@ -624,7 +624,7 @@ col_tit, col_btn = st.columns([5, 1])
 with col_tit:
 
     st.markdown(
-        '<h1>Comunicación organizacional</h1>',
+        '<h1>Comunicación Organizacional</h1>',
         unsafe_allow_html=True
     )
 
