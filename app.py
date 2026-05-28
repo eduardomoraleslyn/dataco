@@ -658,17 +658,53 @@ entrada = st.text_input(
 
 if entrada:
 
+    entrada = entrada.strip().lower()
+
     alias_busqueda = {
         "cyp": "corporativo y planta",
         "corp": "corporativo y planta",
         "corporativo": "corporativo y planta",
-        "corporativo y planta": "corporativo y planta",
         "suc": "sucursal",
         "sucs": "sucursal",
         "sucursal": "sucursal",
-        "sucursales": "sucursal",
-        "otro": "otro"
+        "sucursales": "sucursal"
     }
+
+    if entrada.startswith("seg:"):
+
+        termino = entrada.replace("seg:", "").strip()
+
+        termino = alias_busqueda.get(
+            termino,
+            termino
+        )
+
+        mascara = (
+            df["Segmento"]
+            .astype(str)
+            .str.lower()
+            .str.contains(termino, na=False)
+        )
+
+    else:
+
+        termino_busqueda = alias_busqueda.get(
+            entrada,
+            entrada
+        )
+
+        mascara = df.astype(str).apply(
+            lambda x: x.str.lower().str.contains(
+                termino_busqueda,
+                na=False
+            )
+        ).any(axis=1)
+
+    res = df[mascara].copy()
+
+else:
+
+    res = df.copy()
 
     termino_busqueda = alias_busqueda.get(entrada, entrada)
 
