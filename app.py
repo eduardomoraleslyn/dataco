@@ -53,8 +53,6 @@ if "fila_seleccionada_idx" not in st.session_state:
 
 st.markdown("""
 <style>
-st.markdown("""
-<style>
 
 /* COSAS CSS ARRIBA */
 
