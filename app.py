@@ -195,6 +195,9 @@ button[kind="primary"] {
 
 .wrapper-btn-editar button,
 .wrapper-btn-borrar button {
+
+    margin-top: -8px !important;
+    
     border-radius: 8px !important;
     font-weight: 600 !important;
     font-size: 0.78rem !important;
