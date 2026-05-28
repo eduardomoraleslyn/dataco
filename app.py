@@ -152,16 +152,28 @@ div[data-testid="InputInstructions"] {
 }
 
 div[data-testid="stDownloadButton"] button {
-    background-color: #898989 !important;
-    color: white !important;
-    font-family: 'Google Sans Flex', sans-serif !important;
-    border: none !important;
-    border-radius: 10px !important;
-    height: 38px !important;
-    font-size: 14px !important;
-    font-weight: 500 !important;
-    width: 100% !important;
-    box-shadow: none !important;
+
+    width:100% !important;
+    height:38px !important;
+
+    background-color:#898989 !important;
+    color:white !important;
+
+    border:none !important;
+    border-radius:10px !important;
+
+    font-weight:500 !important;
+    font-size:14px !important;
+
+    font-family:'Google Sans Flex',sans-serif !important;
+
+    letter-spacing:0px !important;
+
+    cursor:pointer !important;
+
+    box-shadow:none !important;
+
+    transition:all 0.15s ease !important;
 }
 
 button[kind="primary"] {
