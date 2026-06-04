@@ -35,7 +35,7 @@ COLUMNAS = [
     "Ingreso"
 ]
 
-# =========================================================if entrada:
+# =========================================================
 # SESSION STATE
 # =========================================================
 
@@ -266,7 +266,7 @@ div[data-testid="stDialog"] button[kind="primary"] {
     margin-top: 8px !important;
 }
 .contact-row {
-    padding: -3rem 0rem -3rem 0rem;
+    padding: 2.2rem 0rem 1rem 0rem;
     border-bottom: 1px solid #E2E8F0;
 }
 
@@ -416,7 +416,7 @@ def modal_nuevo_contacto():
 
         n_seg = c2.selectbox(
             "Segmento",
-            ["Corporativo y Planta", "Sucursal", "Otro"]
+            ["Corporativo y Planta", "Sucursales", "Otro"]
         )
 
         n_gen = c1.selectbox(
@@ -734,26 +734,89 @@ def normalizar_texto(texto):
     )
 
     return texto
-    
-if entrada:
 
-    palabras_busqueda = normalizar_texto(entrada).split()
+
+def buscar_general(dataframe, texto_busqueda):
+
+    palabras_busqueda = normalizar_texto(texto_busqueda).split()
 
     def coincide_filtro(fila):
 
-        texto = " ".join([
+        texto_fila = " ".join([
             normalizar_texto(valor)
             for valor in fila.astype(str)
         ])
 
         return all(
-            palabra in texto
+            palabra in texto_fila
             for palabra in palabras_busqueda
         )
 
-    res = df[
-        df.apply(coincide_filtro, axis=1)
-    ]
+    return dataframe[
+        dataframe.apply(coincide_filtro, axis=1)
+    ].copy()
+
+
+def buscar_por_segmento(dataframe, texto_segmento):
+
+    palabras_segmento = normalizar_texto(texto_segmento).split()
+
+    def coincide_segmento(valor):
+
+        texto_valor = normalizar_texto(valor)
+
+        return all(
+            palabra in texto_valor
+            for palabra in palabras_segmento
+        )
+
+    mascara = dataframe["Segmento"].apply(coincide_segmento)
+
+    return dataframe[mascara].copy()
+
+
+if entrada:
+
+    entrada_normalizada = normalizar_texto(entrada)
+
+    alias_general = {
+        "cyp": "corporativo y planta",
+        "corp": "corporativo y planta",
+        "suc1": "sucursales"
+    }
+
+    alias_segmento = {
+        "cyp": "corporativo y planta",
+        "corp": "corporativo y planta",
+        "suc": "sucursales",
+        "suc1": "sucursales"
+    }
+
+    if entrada_normalizada.startswith("seg:"):
+
+        termino_segmento = entrada_normalizada.replace("seg:", "").strip()
+
+        termino_segmento = alias_segmento.get(
+            termino_segmento,
+            termino_segmento
+        )
+
+        res = buscar_por_segmento(
+            df,
+            termino_segmento
+        )
+
+    else:
+
+        entrada_normalizada = alias_general.get(
+            entrada_normalizada,
+            entrada_normalizada
+        )
+
+        res = buscar_general(
+            df,
+            entrada_normalizada
+        )
 
 else:
 
