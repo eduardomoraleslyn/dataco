@@ -4,11 +4,14 @@ import plotly.express as px
 import os
 import time
 import unicodedata
+import io
+import base64
+import json
 
 import gspread
+import streamlit.components.v1 as components
 
 from oauth2client.service_account import ServiceAccountCredentials
-
 from gspread_dataframe import get_as_dataframe, set_with_dataframe
 
 # =========================================================
@@ -66,7 +69,9 @@ st.markdown("""
     font-family: 'Google Sans Flex', sans-serif !important;
 }
 
-.main { background-color: #F8FAFC; }
+.main {
+    background-color: #F8FAFC;
+}
 
 h1 {
     color: #0F172A !important;
@@ -120,30 +125,6 @@ h1 {
     color: #0F172A !important;
 }
 
-.contact-card {
-
-    background-color: transparent;
-
-    padding: 5rem 5rem 5rem 5rem;
-
-    border-radius: 0px;
-
-    border-left: none;
-
-    box-shadow: none;
-
-    border-bottom: 1px solid #E2E8F0;
-
-    margin-bottom: 12px;
-}
-
-.card-name {
-    color: #1E3A8A;
-    font-size: 1.35rem;
-    font-weight: 700;
-    letter-spacing: -0.6px;
-}
-
 .badge-lyncott {
     background-color: #EFF6FF !important;
     color: #1E40AF !important;
@@ -159,33 +140,23 @@ div[data-testid="InputInstructions"] {
 }
 
 div[data-testid="stDownloadButton"] button {
-
-    width:100% !important;
-    height:38px !important;
-
-    background-color:#898989 !important;
-    color:white !important;
-
-    border:none !important;
-    border-radius:10px !important;
-
-    font-weight:500 !important;
-    font-size:14px !important;
-
-    font-family:'Google Sans Flex',sans-serif !important;
-
-    letter-spacing:0px !important;
-
-    cursor:pointer !important;
-
-    box-shadow:none !important;
-
-    transition:all 0.15s ease !important;
+    width: 100% !important;
+    height: 38px !important;
+    background-color: #898989 !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+    font-family: 'Google Sans Flex', sans-serif !important;
+    letter-spacing: 0px !important;
+    cursor: pointer !important;
+    box-shadow: none !important;
+    transition: all 0.15s ease !important;
 }
+
 div[data-testid="stDownloadButton"] button:hover {
-
-    background-color:#7f7f7f !important;
-
+    background-color: #7f7f7f !important;
 }
 
 button[kind="primary"] {
@@ -202,17 +173,13 @@ button[kind="primary"] {
 
 .wrapper-btn-editar button,
 .wrapper-btn-borrar button {
-
     margin-top: -8px !important;
-    
     border-radius: 8px !important;
     font-weight: 600 !important;
-    font-size: 0.78rem !important;
+    font-size: 0.75rem !important;
     border: none !important;
     height: 32px !important;
-font-size: 0.75rem !important;
-padding: 0px 6px !important;
-border-radius: 8px !important;
+    padding: 0px 6px !important;
 }
 
 .wrapper-btn-editar button {
@@ -240,8 +207,8 @@ border-radius: 8px !important;
     justify-content: center !important;
     text-decoration: none !important;
 }
-/* MODAL: alta / edición */
 
+/* MODAL: alta / edición */
 div[data-testid="stDialog"] [data-testid="stForm"] {
     border-radius: 16px !important;
     padding: 1.3rem !important;
@@ -265,6 +232,7 @@ div[data-testid="stDialog"] button[kind="primary"] {
     border: none !important;
     margin-top: 8px !important;
 }
+
 .contact-row {
     padding: 2.2rem 0rem 1rem 0rem;
     border-bottom: 1px solid #E2E8F0;
@@ -295,13 +263,12 @@ div[data-testid="stDialog"] button[kind="primary"] {
     font-size: 0.85rem;
     margin-top: 4px;
 }
+
 a[href^="#"] {
     display: none !important;
 }
-
 </style>
 """, unsafe_allow_html=True)
-
 
 # =========================================================
 # HELPERS
@@ -362,8 +329,11 @@ def cargar_datos():
 
         "Direccion": "Direccion",
         "Dirección": "Direccion",
+        "Área": "Direccion",
+        "Área / Dirección": "Direccion",
 
-        "Ingreso": "Ingreso"
+        "Ingreso": "Ingreso",
+        "Fecha de ingreso": "Ingreso"
     }
 
     df = df.rename(columns=mapa_columnas)
@@ -375,10 +345,43 @@ def cargar_datos():
 
     df = df[COLUMNAS]
 
+    df["Segmento"] = (
+        df["Segmento"]
+        .astype(str)
+        .str.strip()
+        .replace({
+            "Sucursal": "Sucursales",
+            "sucursal": "Sucursales",
+            "SUCURSAL": "Sucursales",
+            "Sucursales": "Sucursales",
+            "Corporativo Y Planta": "Corporativo y Planta",
+            "corporativo y planta": "Corporativo y Planta",
+            "CORPORATIVO Y PLANTA": "Corporativo y Planta"
+        })
+    )
+
     return df
 
 
 def guardar_dataframe(dataframe):
+
+    dataframe = dataframe.copy()
+
+    if "Segmento" in dataframe.columns:
+        dataframe["Segmento"] = (
+            dataframe["Segmento"]
+            .astype(str)
+            .str.strip()
+            .replace({
+                "Sucursal": "Sucursales",
+                "sucursal": "Sucursales",
+                "SUCURSAL": "Sucursales",
+                "Sucursales": "Sucursales",
+                "Corporativo Y Planta": "Corporativo y Planta",
+                "corporativo y planta": "Corporativo y Planta",
+                "CORPORATIVO Y PLANTA": "Corporativo y Planta"
+            })
+        )
 
     sheet = conectar_sheet()
 
@@ -391,6 +394,23 @@ def guardar_dataframe(dataframe):
         include_column_header=True,
         resize=True
     )
+
+
+def normalizar_texto(texto):
+
+    if pd.isna(texto):
+        return ""
+
+    texto = str(texto).lower().strip()
+
+    texto = unicodedata.normalize("NFKD", texto)
+
+    texto = "".join(
+        c for c in texto
+        if not unicodedata.combining(c)
+    )
+
+    return texto
 
 
 # =========================================================
@@ -429,10 +449,10 @@ def modal_nuevo_contacto():
         n_ing = st.date_input("Fecha de ingreso")
 
         if st.form_submit_button(
-    "Guardar contacto",
-    type="primary",
-    use_container_width=True
-):
+            "Guardar contacto",
+            type="primary",
+            use_container_width=True
+        ):
 
             if n_nom and n_cor:
 
@@ -466,6 +486,7 @@ def modal_nuevo_contacto():
             else:
                 st.error("El nombre y el correo son obligatorios.")
 
+
 @st.dialog("Proceso exitoso")
 def modal_confirmacion():
 
@@ -476,6 +497,7 @@ def modal_confirmacion():
         st.session_state.mostrar_confirmacion = False
 
         st.rerun()
+
 
 @st.dialog("Editar colaborador")
 def modal_editar_contacto(indice_fila, datos_actuales):
@@ -508,13 +530,17 @@ def modal_editar_contacto(indice_fila, datos_actuales):
             "Puesto",
             value=str(datos_actuales["Puesto"])
         )
+
         opciones_segmento = [
             "Corporativo y Planta",
-            "Sucursal",
+            "Sucursales",
             "Otro"
         ]
 
-        segmento_actual = str(datos_actuales["Segmento"])
+        segmento_actual = str(datos_actuales["Segmento"]).strip()
+
+        if segmento_actual == "Sucursal":
+            segmento_actual = "Sucursales"
 
         ed_seg = c2.selectbox(
             "Segmento",
@@ -537,6 +563,7 @@ def modal_editar_contacto(indice_fila, datos_actuales):
             index=opciones_genero.index(genero_actual)
             if genero_actual in opciones_genero else 0
         )
+
         ed_dir = c2.text_input(
             "Área / Dirección",
             value=str(datos_actuales["Direccion"])
@@ -567,6 +594,8 @@ def modal_editar_contacto(indice_fila, datos_actuales):
             st.session_state.modal_editar_abierto = False
 
             st.rerun()
+
+
 @st.dialog("Eliminar contacto")
 def modal_eliminar_contacto(indice_fila, nombre_colaborador):
 
@@ -618,6 +647,7 @@ def modal_eliminar_contacto(indice_fila, nombre_colaborador):
             st.session_state.fila_seleccionada_idx = None
             st.session_state.mostrar_eliminado = True
             st.rerun()
+
 
 # =========================================================
 # DATA
@@ -687,19 +717,20 @@ with col_tit:
 
 with col_btn:
 
-        st.write("")
-        if st.button(
-            "+ Alta de usuario",
-            key="btn_alta",
-            type="primary",
-            use_container_width=True
-        ):
+    st.write("")
 
-            st.session_state.modal_editar_abierto = False
-            st.session_state.modal_eliminar_abierto = False
-            st.session_state.fila_seleccionada_idx = None
+    if st.button(
+        "+ Alta de usuario",
+        key="btn_alta",
+        type="primary",
+        use_container_width=True
+    ):
 
-            modal_nuevo_contacto()
+        st.session_state.modal_editar_abierto = False
+        st.session_state.modal_eliminar_abierto = False
+        st.session_state.fila_seleccionada_idx = None
+
+        modal_nuevo_contacto()
 
 # =========================================================
 # SEARCH
@@ -718,62 +749,6 @@ entrada = st.text_input(
     "",
     placeholder="Escribe para realizar tu búsqueda..."
 ).strip().lower()
-
-def normalizar_texto(texto):
-
-    if pd.isna(texto):
-        return ""
-
-    texto = str(texto).lower().strip()
-
-    texto = unicodedata.normalize("NFKD", texto)
-
-    texto = "".join(
-        c for c in texto
-        if not unicodedata.combining(c)
-    )
-
-    return texto
-
-
-def buscar_general(dataframe, texto_busqueda):
-
-    palabras_busqueda = normalizar_texto(texto_busqueda).split()
-
-    def coincide_filtro(fila):
-
-        texto_fila = " ".join([
-            normalizar_texto(valor)
-            for valor in fila.astype(str)
-        ])
-
-        return all(
-            palabra in texto_fila
-            for palabra in palabras_busqueda
-        )
-
-    return dataframe[
-        dataframe.apply(coincide_filtro, axis=1)
-    ].copy()
-
-
-def buscar_por_segmento(dataframe, texto_segmento):
-
-    palabras_segmento = normalizar_texto(texto_segmento).split()
-
-    def coincide_segmento(valor):
-
-        texto_valor = normalizar_texto(valor)
-
-        return all(
-            palabra in texto_valor
-            for palabra in palabras_segmento
-        )
-
-    mascara = dataframe["Segmento"].apply(coincide_segmento)
-
-    return dataframe[mascara].copy()
-
 
 if entrada:
 
@@ -801,10 +776,20 @@ if entrada:
             termino_segmento
         )
 
-        res = buscar_por_segmento(
-            df,
-            termino_segmento
-        )
+        palabras_segmento = termino_segmento.split()
+
+        def coincide_segmento(valor):
+
+            texto_segmento = normalizar_texto(valor)
+
+            return all(
+                palabra in texto_segmento
+                for palabra in palabras_segmento
+            )
+
+        mascara = df["Segmento"].apply(coincide_segmento)
+
+        res = df[mascara].copy()
 
     else:
 
@@ -813,10 +798,23 @@ if entrada:
             entrada_normalizada
         )
 
-        res = buscar_general(
-            df,
-            entrada_normalizada
-        )
+        palabras_busqueda = entrada_normalizada.split()
+
+        def coincide_filtro(fila):
+
+            texto = " ".join([
+                normalizar_texto(valor)
+                for valor in fila.astype(str)
+            ])
+
+            return all(
+                palabra in texto
+                for palabra in palabras_busqueda
+            )
+
+        res = df[
+            df.apply(coincide_filtro, axis=1)
+        ].copy()
 
 else:
 
@@ -932,11 +930,6 @@ else:
 
 st.write("---")
 
-import io
-import base64
-import json
-import streamlit.components.v1 as components
-
 excel_buffer = io.BytesIO()
 res.to_excel(excel_buffer, index=False, engine="openpyxl")
 excel_b64 = base64.b64encode(excel_buffer.getvalue()).decode()
@@ -969,16 +962,12 @@ with col_botones_cards:
     font-family:'Google Sans Flex', sans-serif;
 ">
 
-    <!-- FILA BOTONES -->
-
     <div style="
         display:flex;
         justify-content:flex-end;
         gap:10px;
         width:100%;
     ">
-
-        <!-- EXPORTAR -->
 
         <a
             href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{excel_b64}"
@@ -1018,8 +1007,6 @@ with col_botones_cards:
 
         </a>
 
-        <!-- COPIAR -->
-
         <button
             onclick='
                 navigator.clipboard.writeText({correos_js});
@@ -1054,8 +1041,6 @@ with col_botones_cards:
 
     </div>
 
-    <!-- FILA MENSAJES -->
-
     <div style="
         display:flex;
         justify-content:flex-end;
@@ -1068,16 +1053,11 @@ with col_botones_cards:
             id="msg-exportar"
             style="
                 flex:1;
-
                 opacity:0;
-
                 text-align:center;
-
                 color:#3c3c3c;
-
                 font-size:13px;
                 font-weight:300;
-
                 transition:opacity 0.2s ease;
             "
         >
@@ -1088,16 +1068,11 @@ with col_botones_cards:
             id="msg-copiar"
             style="
                 flex:1;
-
                 opacity:0;
-
                 text-align:center;
-
                 color:#3c3c3c;
-
                 font-size:13px;
                 font-weight:300;
-
                 transition:opacity 0.2s ease;
             "
         >
@@ -1123,7 +1098,7 @@ for indice, fila in res.iterrows():
     with col_info:
 
         st.markdown(
-            f'''
+            f"""
             <div class="contact-row-name">
                 {fila["Nombre"]}
                 <span class="contact-row-id">
@@ -1140,7 +1115,7 @@ for indice, fila in res.iterrows():
                 {str(fila["Centro"]).replace("Corporativo Y Planta", "Corporativo y Planta")} ·
                 {fila["Direccion"]}
             </div>
-            ''',
+            """,
             unsafe_allow_html=True
         )
 
